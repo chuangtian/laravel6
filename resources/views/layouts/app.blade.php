@@ -90,7 +90,7 @@
                     <h5 class="widget-user-desc">Founder & CEO</h5>
                 </div>
                 <div class="widget-user-image">
-                    <img class="img-circle elevation-2" src="../dist/img/user1-128x128.jpg" alt="User Avatar">
+                    <img class="img-circle elevation-2" src="{{asset('dist/img/user1-128x128.jpg')}}" alt="User Avatar">
                 </div>
                 <div class="card-footer">
                     <div class="row">
