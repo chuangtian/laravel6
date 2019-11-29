@@ -89,7 +89,7 @@
                     <h3 class="widget-user-username">Alexander Pierce</h3>
                     <h5 class="widget-user-desc">Founder & CEO</h5>
                 </div>
-                <div class="widget-user-image">
+                <div class="widget-user-image"  data-toggle="modal" data-target="#modal-info">
                     <img class="img-circle elevation-2" src="{{asset('dist/img/user1-128x128.jpg')}}" alt="User Avatar">
                 </div>
                 <div class="card-footer">
@@ -123,6 +123,30 @@
                 </div>
             </div>
             <!-- /.widget-user -->
+            <div class="modal fade" id="modal-info">
+                <div class="modal-dialog">
+                    <div class="modal-content bg-info">
+                        <div class="modal-header">
+                            <h4 class="modal-title">出门右拐 慢走不送</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>先空着吧</p>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" >
+                                                                            @csrf
+                                <button type="submit" class="btn btn-outline-light">退出</button>
+                            </form>
+
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
 @endguest
 
         <main class="py-4">
