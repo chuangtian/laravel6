@@ -136,6 +136,8 @@
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                            <a href="{{url('/admin')}}" target="_blank" rel="noopener norefferrer" > <button type="submit" class="btn btn-outline-light">前往后台</button></a>
+
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" >
                                                                             @csrf
                                 <button type="submit" class="btn btn-outline-light">退出</button>
