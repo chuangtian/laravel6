@@ -24,14 +24,14 @@
                                         <span class="description">Shared publicly - 7:30 PM Today</span>
                                     </div>
                                     <!-- /.user-block -->
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-toggle="tooltip" title="Mark as read">
-                                            <i class="far fa-circle"></i></button>
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
+                                    {{--<div class="card-tools">--}}
+                                        {{--<button type="button" class="btn btn-tool" data-toggle="tooltip" title="Mark as read">--}}
+                                            {{--<i class="far fa-circle"></i></button>--}}
+                                        {{--<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>--}}
+                                        {{--</button>--}}
+                                        {{--<button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>--}}
+                                        {{--</button>--}}
+                                    {{--</div>--}}
                                     <!-- /.card-tools -->
                                 </div>
                                 <!-- /.card-header -->
