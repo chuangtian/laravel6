@@ -37,7 +37,6 @@
                                 <!-- /.card-header -->
                                 <div class="card-body">
                                     <img class="img-fluid pad" src="{{asset('dist/img/photo2.png')}}" alt="Photo">
-
                                     <p>I took this photo this morning. What do you guys think?</p>
                                     <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i> Share</button>
                                     <button type="button" class="btn btn-default btn-sm"><i class="far fa-thumbs-up"></i> Like</button>
