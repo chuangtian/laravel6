@@ -124,7 +124,7 @@
             var file = document.getElementById("exampleFormControlFile1").files[0];
             formData.append("image", file);
             $.ajax({
-                url:"/api/update/updateImage",
+                url:"{{ url('api/update/updateImage') }}",
                 type:"POST",
                 data:formData,
                 processData : false,

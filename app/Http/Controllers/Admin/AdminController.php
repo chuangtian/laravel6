@@ -30,11 +30,11 @@ class AdminController extends Controller
         $image='';
 
         foreach ($imagecheck as $value) {
-            $image.=Str::after($value, asset('/manager/').'/').',';
+            $image.=Str::after($value, asset('/')).',';
         }
 
         $data['message']=$message;
-        $data['image']=$image;
+        $data['image']=substr($image, 0, -1);
         $data['status']=1;
         $data['u_id']=Auth('')->id();
         $data['creation_time']=date('Y-m-d H:i:s');

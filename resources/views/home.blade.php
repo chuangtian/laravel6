@@ -14,26 +14,31 @@
                         </div>
                     @endif
 
-
-                            <!-- Box Comment -->
+                    @foreach ($data as $value)
                             <div class="card card-widget">
                                 <div class="card-header">
                                     <div class="user-block">
-                                        <img class="img-circle" src="{{ asset('dist/img/user1-128x128.jpg')}}" alt="User Image">
-                                        <span class="username"><a href="#">Jonathan Burke Jr.</a></span>
-                                        <span class="description">Shared publicly - 7:30 PM Today</span>
+                                        <img class="img-circle" src="{{ asset($value->u_image)}}" alt="User Image">
+                                        <span class="username"><a href="#">{{$value->name}}</a></span>
+                                        <span class="description">发布时间 - {{$value->creation_time}}</span>
                                     </div>
-                                    <!-- /.user-block -->
-                                    {{--<div class="card-tools">--}}
-                                        {{--<button type="button" class="btn btn-tool" data-toggle="tooltip" title="Mark as read">--}}
-                                            {{--<i class="far fa-circle"></i></button>--}}
-                                        {{--<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>--}}
-                                        {{--</button>--}}
-                                        {{--<button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>--}}
-                                        {{--</button>--}}
-                                    {{--</div>--}}
-                                    <!-- /.card-tools -->
                                 </div>
+                                <div class="card-body">
+                                    <p>{{$value->message}}</p>
+                                    @foreach($value->image as $image)
+                                        <img class="img-fluid pad" src="{{asset($image)}}" alt="Photo">
+                                    @endforeach
+                                    <p></p>
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i> Share</button>
+                                    <button type="button" class="btn btn-default btn-sm"><i class="far fa-thumbs-up"></i> Like</button>
+                                    <span class="float-right text-muted">127 likes - 3 comments</span>
+                                </div>
+                            </div>
+                    @endforeach
+
+                            <!-- Box Comment -->
+                            <div class="card card-widget">
+
                                 <!-- /.card-header -->
                                 <div class="card-body">
                                     <img class="img-fluid pad" src="{{asset('dist/img/photo2.png')}}" alt="Photo">
@@ -90,6 +95,7 @@
                             <!-- /.card -->
                         </div>
                         <!-- /.col -->
+        {{ $data->links() }}
 
             {{--</div>--}}
 {{--        </div>--}}
