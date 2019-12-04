@@ -18,4 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::post('/update/updateImage', 'api\ApiController@updateImage');
+Route::post('/update/updateImage', 'Api\ApiController@updateImage');
