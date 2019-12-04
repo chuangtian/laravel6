@@ -29,77 +29,192 @@
                                         <img class="img-fluid pad" src="{{asset($image)}}" alt="Photo">
                                     @endforeach
                                     <p></p>
-                                    <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i> Share</button>
-                                    <button type="button" class="btn btn-default btn-sm"><i class="far fa-thumbs-up"></i> Like</button>
-                                    <span class="float-right text-muted">127 likes - 3 comments</span>
+{{--                                    <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i> Share</button>--}}
+                                    <button type="button" class="btn btn-default btn-sm"   onclick="imagesubmit({{$value->id}})"><i class="far fa-thumbs-up"></i> Like</button>
+                                    <span class="float-right text-muted"><span id="l{{$value->id}}">{{$value->like}}</span> 点赞 - {{ count($value->comments) }} 评论</span>
+                                </div>
+                                <div class="card-footer card-comments">
+                                    @foreach($value->comments as $comment)
+                                        <div>
+                                            <div class="card-comment">
+                                                <!-- User image -->
+                                                <img class="img-circle img-sm" src="{{asset('manager/'.$comment->c_image)}}" alt="User Image">
+                                                <div class="comment-text">
+                                                <span class="username">
+                                                  {{$comment->c_name}}
+                                                  <span class="text-muted float-right">{{$comment->creation_time}}</span>
+                                                </span><!-- /.username -->
+                                                    {{$comment->message}}
+                                                </div>
+                                                <!-- /.comment-text -->
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                        @guest
+                                        @else
+                                            <div class="card-footer">
+{{--                                                <form action="#" method="post">--}}
+                                                <form  name="form" id="fromdata" enctype="multipart/form-data" onsubmit="return sub()">
+                                                    <img class="img-fluid img-circle img-sm" src="{{ asset('manager/'.Auth::user()->image) }}" alt="Alt Text">
+                                                    <!-- .img-push is used to add margin to elements next to floating images -->
+                                                    <div class="img-push">
+                                                        <input type="hidden" name="messageid" id="messageid" value="{{$value->id}}">
+                                                        <input type="text" class="form-control form-control-sm" id="comment" placeholder="按Enter发表评论">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        @endguest
+
+
                                 </div>
                             </div>
                     @endforeach
 
-                            <!-- Box Comment -->
-                            <div class="card card-widget">
-
-                                <!-- /.card-header -->
-                                <div class="card-body">
-                                    <img class="img-fluid pad" src="{{asset('dist/img/photo2.png')}}" alt="Photo">
-                                    <p>I took this photo this morning. What do you guys think?</p>
-                                    <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i> Share</button>
-                                    <button type="button" class="btn btn-default btn-sm"><i class="far fa-thumbs-up"></i> Like</button>
-                                    <span class="float-right text-muted">127 likes - 3 comments</span>
-                                </div>
-                                <!-- /.card-body -->
-                                <div class="card-footer card-comments">
-                                    <div class="card-comment">
-                                        <!-- User image -->
-                                        <img class="img-circle img-sm" src="{{asset('dist/img/user3-128x128.jpg')}}" alt="User Image">
-
-                                        <div class="comment-text">
-                    <span class="username">
-                      Maria Gonzales
-                      <span class="text-muted float-right">8:03 PM Today</span>
-                    </span><!-- /.username -->
-                                            It is a long established fact that a reader will be distracted
-                                            by the readable content of a page when looking at its layout.
-                                        </div>
-                                        <!-- /.comment-text -->
-                                    </div>
-                                    <!-- /.card-comment -->
-                                    <div class="card-comment">
-                                        <!-- User image -->
-                                        <img class="img-circle img-sm" src="{{asset('dist/img/user4-128x128.jpg')}}" alt="User Image">
-
-                                        <div class="comment-text">
-                    <span class="username">
-                      Luna Stark
-                      <span class="text-muted float-right">8:03 PM Today</span>
-                    </span><!-- /.username -->
-                                            It is a long established fact that a reader will be distracted
-                                            by the readable content of a page when looking at its layout.
-                                        </div>
-                                        <!-- /.comment-text -->
-                                    </div>
-                                    <!-- /.card-comment -->
-                                </div>
-                                <!-- /.card-footer -->
-                                <div class="card-footer">
-                                    <form action="#" method="post">
-                                        <img class="img-fluid img-circle img-sm" src="{{asset('dist/img/user4-128x128.jpg')}}" alt="Alt Text">
-                                        <!-- .img-push is used to add margin to elements next to floating images -->
-                                        <div class="img-push">
-                                            <input type="text" class="form-control form-control-sm" placeholder="Press enter to post comment">
-                                        </div>
-                                    </form>
-                                </div>
-                                <!-- /.card-footer -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
+                        {{ $data->appends(['getTime' =>$time])->links() }}
+                </div>
                         <!-- /.col -->
-        {{ $data->links() }}
+
 
             {{--</div>--}}
 {{--        </div>--}}
 
     </div>
 </div>
+<!-- Sweet Alert -->
+<script src="{{asset('assets/js/plugin/sweetalert/sweetalert.min.js')}}"></script>
+<script>
+    function imagesubmit($this) {
+        var formData = new FormData();
+        formData.append("_token", "{{csrf_token()}}");
+        formData.append("mid", $this);
+        id=$this;
+        $.ajax({
+            url:"{{ url('/like') }}",
+            type:"POST",
+            data:formData,
+            processData : false,
+            contentType : false,
+            dataType : 'json',
+            async : false,
+            success : function (result) {
+                if(result.code===200){
+                    swal(result.message, {
+                        icon: "success",
+                        buttons : {
+                            confirm : {
+                                className: 'btn btn-success'
+                            }
+                        }
+                    });
+                    like=$("#l"+id).text();
+                    if(result.info===1){
+                        zenglike=parseInt(like)+1;
+                    }else{
+                        zenglike=parseInt(like)-1;
+                        if(zenglike<=0){
+                            zenglike=0;
+                        }
+                    }
+                    $("#l"+id).text(zenglike)
+                }else{
+                    swal("请登录", "", {
+                        icon : "error",
+                        buttons: {
+                            confirm: {
+                                className : 'btn btn-danger'
+                            }
+                        },
+                    });
+                }
+
+            },
+            error:function(xhr){
+                swal("服务器问题", "允许说着脏话联系我", {
+                    icon : "error",
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-danger'
+                        }
+                    },
+                });
+            }
+
+        })
+    }
+
+    function sub() {
+        comment=$('#comment').val();
+        mid=$('#messageid').val();
+        var formData = new FormData();
+        formData.append("_token", "{{csrf_token()}}");
+        formData.append("comment", comment);
+        formData.append("mid", mid);
+        $.ajax({
+            url:"{{ url('api/update/updateImage') }}",
+            type:"POST",
+            data:formData,
+            processData : false,
+            contentType : false,
+            dataType : 'json',
+            async : false,
+            success : function (result) {
+                //成功后的回调事件
+                console.log(result.cade);
+                if(result.cade===200){
+                    image=result.image;
+                    adddiv='<div class="card-comment">\n' +
+                        '                                                <!-- User image -->\n' +
+                        '                                                <img class="img-circle img-sm" src="{{asset(\'manager/\'.$comment->c_image)}}" alt="User Image">\n' +
+                        '                                                <div class="comment-text">\n' +
+                        '                                                <span class="username">\n' +
+                        '                                                  {{$comment->c_name}}\n' +
+                        '                                                  <span class="text-muted float-right">{{$comment->creation_time}}</span>\n' +
+                        '                                                </span><!-- /.username -->\n' +
+                        '                                                    {{$comment->message}}\n' +
+                        '                                                </div>\n' +
+                        '                                                <!-- /.comment-text -->\n' +
+                        '                                            </div>';
+                    // $("#addimage").append(adddiv);
+                }
+                if (result.cade===402){
+                    swal("请登录", "", {
+                        icon : "error",
+                        buttons: {
+                            confirm: {
+                                className : 'btn btn-danger'
+                            }
+                        },
+                    });
+                }
+
+                if (result.cade===401){
+                    swal(result.message, {
+                        icon: "success",
+                        buttons : {
+                            confirm : {
+                                className: 'btn btn-success'
+                            }
+                        }
+                    });
+                }
+
+            },
+            error:function(xhr){
+                swal("服务器问题", "允许说着脏话联系我", {
+                    icon : "error",
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-danger'
+                        }
+                    },
+                });
+            }
+
+        });
+
+        return false;
+    }
+
+</script>
+
 @endsection
