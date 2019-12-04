@@ -19,7 +19,7 @@ class ApiController extends Controller
             return $data;
         }
         return $data;
-        
+
     }
 
 
