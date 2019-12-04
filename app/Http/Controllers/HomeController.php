@@ -110,8 +110,15 @@ class HomeController extends Controller
             $data['status']=$uid;
             $info=$commentMode->addComment($data);
             if($info){
+                $commentdata=$commentMode->getOneComment($info);
                 $data['code']=200;
                 $data['message']='评论成功';
+                $data['c_image']=asset('manager/'.$commentdata->c_image);
+                $data['c_name']=$commentdata->c_name;
+                $data['creation_time']=$commentdata->creation_time;
+                $data['message']=$commentdata->message;
+
+
             }else{
                 $data['code']=401;
                 $data['message']='评论失败';

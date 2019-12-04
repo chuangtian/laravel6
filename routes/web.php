@@ -19,6 +19,7 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::post('/like', 'HomeController@addlike')->name('like');
+Route::post('/comment', 'HomeController@comment')->name('comment');
 Route::group(['middleware' => 'auth','prefix'=>'admin','namespace'=>'Admin'], function () {
     Route::get('/', 'AdminController@index')->name('admin');
     Route::post('/addMessage', 'AdminController@addMessage')->name('addMessage');

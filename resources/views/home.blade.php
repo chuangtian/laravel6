@@ -31,25 +31,27 @@
                                     <p></p>
 {{--                                    <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i> Share</button>--}}
                                     <button type="button" class="btn btn-default btn-sm"   onclick="imagesubmit({{$value->id}})"><i class="far fa-thumbs-up"></i> Like</button>
-                                    <span class="float-right text-muted"><span id="l{{$value->id}}">{{$value->like}}</span> 点赞 - {{ count($value->comments) }} 评论</span>
+                                    <span class="float-right text-muted"><span id="l{{$value->id}}">{{$value->like}}</span> 点赞 - <span id="c{{$value->id}}">{{ count($value->comments) }}</span> 评论</span>
                                 </div>
                                 <div class="card-footer card-comments">
-                                    @foreach($value->comments as $comment)
-                                        <div>
-                                            <div class="card-comment">
-                                                <!-- User image -->
-                                                <img class="img-circle img-sm" src="{{asset('manager/'.$comment->c_image)}}" alt="User Image">
-                                                <div class="comment-text">
-                                                <span class="username">
-                                                  {{$comment->c_name}}
-                                                  <span class="text-muted float-right">{{$comment->creation_time}}</span>
-                                                </span><!-- /.username -->
-                                                    {{$comment->message}}
+                                    <div id="addcomment">
+                                        @foreach($value->comments as $comment)
+
+                                                <div class="card-comment">
+                                                    <!-- User image -->
+                                                    <img class="img-circle img-sm" src="{{asset('manager/'.$comment->c_image)}}" alt="User Image">
+                                                    <div class="comment-text">
+                                                    <span class="username">
+                                                      {{$comment->c_name}}
+                                                      <span class="text-muted float-right">{{$comment->creation_time}}</span>
+                                                    </span><!-- /.username -->
+                                                        {{$comment->message}}
+                                                    </div>
+                                                    <!-- /.comment-text -->
                                                 </div>
-                                                <!-- /.comment-text -->
-                                            </div>
-                                        </div>
-                                    @endforeach
+
+                                        @endforeach
+                                    </div>
                                         @guest
                                         @else
                                             <div class="card-footer">
@@ -59,7 +61,7 @@
                                                     <!-- .img-push is used to add margin to elements next to floating images -->
                                                     <div class="img-push">
                                                         <input type="hidden" name="messageid" id="messageid" value="{{$value->id}}">
-                                                        <input type="text" class="form-control form-control-sm" id="comment" placeholder="按Enter发表评论">
+                                                        <input type="text" class="form-control form-control-sm" id="comment" value="" placeholder="按Enter发表评论">
                                                     </div>
                                                 </form>
                                             </div>
@@ -144,13 +146,17 @@
 
     function sub() {
         comment=$('#comment').val();
+        console.log(comment);
+
         mid=$('#messageid').val();
+        console.log(mid);
+
         var formData = new FormData();
         formData.append("_token", "{{csrf_token()}}");
         formData.append("comment", comment);
         formData.append("mid", mid);
         $.ajax({
-            url:"{{ url('api/update/updateImage') }}",
+            url:"{{ url('/comment') }}",
             type:"POST",
             data:formData,
             processData : false,
@@ -159,22 +165,31 @@
             async : false,
             success : function (result) {
                 //成功后的回调事件
-                console.log(result.cade);
-                if(result.cade===200){
-                    image=result.image;
+                console.log(result.code);
+                if(result.code===200){
+                    c_image=result.c_image;
+                    c_name=result.c_name;
+                    creation_time=result.creation_time;
+                    message=result.message;
                     adddiv='<div class="card-comment">\n' +
                         '                                                <!-- User image -->\n' +
-                        '                                                <img class="img-circle img-sm" src="{{asset(\'manager/\'.$comment->c_image)}}" alt="User Image">\n' +
+                        '                                                <img class="img-circle img-sm" src="'+ c_image +'" alt="User Image">\n' +
                         '                                                <div class="comment-text">\n' +
                         '                                                <span class="username">\n' +
-                        '                                                  {{$comment->c_name}}\n' +
-                        '                                                  <span class="text-muted float-right">{{$comment->creation_time}}</span>\n' +
+                        '                                                  '+ c_name +'\n' +
+                        '                                                  <span class="text-muted float-right">'+ creation_time +'</span>\n' +
                         '                                                </span><!-- /.username -->\n' +
-                        '                                                    {{$comment->message}}\n' +
+                        '                                                    '+ message +'\n' +
                         '                                                </div>\n' +
                         '                                                <!-- /.comment-text -->\n' +
                         '                                            </div>';
-                    // $("#addimage").append(adddiv);
+                    $("#addcomment").append(adddiv);
+                    $('#comment').val('');
+                    com=$("#c"+mid).text();
+
+                    zengcom=parseInt(com)+1;
+
+                    $("#c"+mid).text(zengcom)
                 }
                 if (result.cade===402){
                     swal("请登录", "", {

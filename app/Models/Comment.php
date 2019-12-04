@@ -28,7 +28,7 @@ class Comment extends Model
             ->select('c.*','u.name as c_name','u.image as c_image','p.name as r_name','p.image as r_image')
             ->leftJoin('users as u', 'u.id', '=', 'c.c_uid')
             ->leftJoin('users as p', 'p.id', '=', 'c.r_uid')
-            ->where('id',$id)
+            ->where('c.id',$id)
             ->first();
         return $data;
     }
