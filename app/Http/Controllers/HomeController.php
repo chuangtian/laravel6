@@ -30,7 +30,7 @@ class HomeController extends Controller
     {
         $time=$request->input('getTime',date("Y-m-d H:i:s"));
         $page=$request->input('page',1);
-        if($page===1){
+        if($page==1){
             $time=date("Y-m-d H:i:s");
         }
         //发送的消息获取
