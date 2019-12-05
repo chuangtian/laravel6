@@ -87,7 +87,7 @@
                                     <div class="notif-center">
                                         <a href="#">
                                             <div class="notif-img">
-                                                <img src="../assets/img/jm_denis.jpg" alt="Img Profile">
+                                                <img src="{{asset('manager/'.Auth::user()->image)}}" alt="Img Profile">
                                             </div>
                                             <div class="notif-content">
                                                 <span class="subject">Jimmy Denis</span>
@@ -99,7 +99,7 @@
                                         </a>
                                         <a href="#">
                                             <div class="notif-img">
-                                                <img src="../assets/img/chadengle.jpg" alt="Img Profile">
+                                                <img src="{{asset('manager/'.Auth::user()->image)}}" alt="Img Profile">
                                             </div>
                                             <div class="notif-content">
                                                 <span class="subject">Chad</span>
@@ -255,14 +255,14 @@
                     <li class="nav-item dropdown hidden-caret">
                         <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
                             <div class="avatar-sm">
-                                <img src="{{asset('assets/img/profile.jpg')}}" alt="..." class="avatar-img rounded-circle">
+                                <img src="{{asset('manager/'.Auth::user()->image)}}" alt="..." class="avatar-img rounded-circle">
                             </div>
                         </a>
                         <ul class="dropdown-menu dropdown-user animated fadeIn">
                             <div class="dropdown-user-scroll scrollbar-outer">
                                 <li>
                                     <div class="user-box">
-                                        <div class="avatar-lg"><img src="{{asset('assets/img/profile.jpg')}}" alt="image profile" class="avatar-img rounded"></div>
+                                        <div class="avatar-lg"><img src="{{asset('manager/'.Auth::user()->image)}}" alt="image profile" class="avatar-img rounded"></div>
                                         <div class="u-text">
                                             <h4>Hizrian</h4>
                                             <p class="text-muted">hello@example.com</p><a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
@@ -295,13 +295,13 @@
             <div class="sidebar-content">
                 <div class="user">
                     <div class="avatar-sm float-left mr-2">
-                        <img src="{{asset('assets/img/profile.jpg')}}" alt="..." class="avatar-img rounded-circle">
+                        <img src="{{asset('manager/'.Auth::user()->image)}}" alt="..." class="avatar-img rounded-circle">
                     </div>
                     <div class="info">
                         <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
 								<span>
-									Hizrian
-									<span class="user-level">Administrator</span>
+									{{ Auth::user()->name }}
+									<span class="user-level">管理员</span>
 									<span class="caret"></span>
 								</span>
                         </a>
@@ -309,21 +309,13 @@
 
                         <div class="collapse in" id="collapseExample">
                             <ul class="nav">
+
                                 <li>
-                                    <a href="#profile">
-                                        <span class="link-collapse">My Profile</span>
+                                    <a href="{{route('userEdit')}}">
+                                        <span class="link-collapse">修改个人信息</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="#edit">
-                                        <span class="link-collapse">Edit Profile</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#settings">
-                                        <span class="link-collapse">Settings</span>
-                                    </a>
-                                </li>
+
                             </ul>
                         </div>
                     </div>

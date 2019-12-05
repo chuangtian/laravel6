@@ -25,8 +25,10 @@
                                 </div>
                                 <div class="card-body">
                                     <p>{{$value->message}}</p>
-                                    @foreach($value->image as $image)
-                                        <img class="img-fluid pad" src="{{asset($image)}}" alt="Photo">
+                                    @foreach($value->image as $imagea)
+                                        @if($imagea)
+                                            <img class="img-fluid pad" src="{{asset($imagea)}}" alt="Photo">
+                                        @endif
                                     @endforeach
                                     <p></p>
 {{--                                    <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i> Share</button>--}}
@@ -34,7 +36,7 @@
                                     <span class="float-right text-muted"><span id="l{{$value->id}}">{{$value->like}}</span> 点赞 - <span id="c{{$value->id}}">{{ count($value->comments) }}</span> 评论</span>
                                 </div>
                                 <div class="card-footer card-comments">
-                                    <div id="addcomment">
+                                    <div id="addcomment{{$value->id}}">
                                         @foreach($value->comments as $comment)
 
                                                 <div class="card-comment">
@@ -56,12 +58,12 @@
                                         @else
                                             <div class="card-footer">
 {{--                                                <form action="#" method="post">--}}
-                                                <form  name="form" id="fromdata" enctype="multipart/form-data" onsubmit="return sub()">
+                                                <form  name="form" id="fromdata" enctype="multipart/form-data" onsubmit="return sub({{$value->id}})">
                                                     <img class="img-fluid img-circle img-sm" src="{{ asset('manager/'.Auth::user()->image) }}" alt="Alt Text">
                                                     <!-- .img-push is used to add margin to elements next to floating images -->
                                                     <div class="img-push">
-                                                        <input type="hidden" name="messageid" id="messageid" value="{{$value->id}}">
-                                                        <input type="text" class="form-control form-control-sm" id="comment" value="" placeholder="按Enter发表评论">
+                                                        <input type="hidden" name="messageid" id="messageid{{$value->id}}" value="{{$value->id}}">
+                                                        <input type="text" class="form-control form-control-sm" id="comment{{$value->id}}" value="" placeholder="按Enter发表评论">
                                                     </div>
                                                 </form>
                                             </div>
@@ -144,12 +146,12 @@
         })
     }
 
-    function sub() {
-        comment=$('#comment').val();
-        console.log(comment);
+    function sub($this) {
 
-        mid=$('#messageid').val();
+        mid=$this;
         console.log(mid);
+        comment=$('#comment'+mid).val();
+        console.log(comment);
 
         var formData = new FormData();
         formData.append("_token", "{{csrf_token()}}");
@@ -183,8 +185,8 @@
                         '                                                </div>\n' +
                         '                                                <!-- /.comment-text -->\n' +
                         '                                            </div>';
-                    $("#addcomment").append(adddiv);
-                    $('#comment').val('');
+                    $("#addcomment"+mid).append(adddiv);
+                    $('#comment'+mid).val('');
                     com=$("#c"+mid).text();
 
                     zengcom=parseInt(com)+1;
