@@ -26,7 +26,9 @@
                                 <div class="card-body">
                                     <p>{{$value->message}}</p>
                                     @foreach($value->image as $image)
-                                        <img class="img-fluid pad" src="{{asset($image)}}" alt="Photo">
+                                        @if($image!=0)
+                                            <img class="img-fluid pad" src="{{asset($image)}}" alt="Photo">
+                                        @endif
                                     @endforeach
                                     <p></p>
 {{--                                    <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i> Share</button>--}}
