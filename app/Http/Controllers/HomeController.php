@@ -28,7 +28,11 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $time=$request->input('time',date("Y-m-d H:i:s"));
+        $time=$request->input('getTime',date("Y-m-d H:i:s"));
+        $page=$request->input('page',1);
+        if($page===1){
+            $time=date("Y-m-d H:i:s");
+        }
         //发送的消息获取
         $messageModel=new Message();
         //查询的朋友圈
