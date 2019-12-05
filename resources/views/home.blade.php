@@ -25,9 +25,9 @@
                                 </div>
                                 <div class="card-body">
                                     <p>{{$value->message}}</p>
-                                    @foreach($value->image as $image)
-                                        @if($image!=0)
-                                            <img class="img-fluid pad" src="{{asset($image)}}" alt="Photo">
+                                    @foreach($value->image as $imagea)
+                                        @if($imagea)
+                                            <img class="img-fluid pad" src="{{asset($imagea)}}" alt="Photo">
                                         @endif
                                     @endforeach
                                     <p></p>
