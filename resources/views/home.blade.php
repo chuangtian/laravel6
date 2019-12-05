@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+
+
 <div class="container">
     <div class="row justify-content-center">
 {{--        <div class="col-md-8">--}}
@@ -86,6 +88,10 @@
 </div>
 <!-- Sweet Alert -->
 <script src="{{asset('assets/js/plugin/sweetalert/sweetalert.min.js')}}"></script>
+
+<script src="{{asset('assets/js/core/jquery.3.2.1.min.js')}}"></script>
+
+
 <script>
     function imagesubmit($this) {
         var formData = new FormData();
@@ -231,6 +237,14 @@
 
         return false;
     }
+    $(window).scroll(function(){
+        //判断是否滑动到页面底部
+        if($(window).scrollTop() <= $(document).height() - $(window).height()+300){
+
+            //alert($(window).scrollTop());
+            // TODO 滑动到底部时可请求下一页的数据并加载，加载可使用append方法
+        }
+    });
 
 </script>
 

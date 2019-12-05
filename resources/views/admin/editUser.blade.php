@@ -46,7 +46,7 @@
 
                             <div class="form-group">
                                 <div class="avatar avatar-xxl">
-                                    <img src="{{asset('manager/'.Auth::user()->image)}}" alt="..." class="avatar-img rounded-circle">
+                                    <img src="{{asset('manager/'.Auth::user()->image)}}" alt="..."  id="tou" class="avatar-img rounded-circle">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -109,6 +109,54 @@
 
     <!-- Sweet Alert -->
     <script src="{{asset('assets/js/plugin/sweetalert/sweetalert.min.js')}}"></script>
+
+    <script>
+        function imagesubmit() {
+            var formData = new FormData();
+            var file = document.getElementById("exampleFormControlFile1").files[0];
+            formData.append("image", file);
+            $.ajax({
+                url:"{{ url('api/update/updateImage') }}",
+                type:"POST",
+                data:formData,
+                processData : false,
+                contentType : false,
+                dataType : 'json',
+                async : false,
+                success : function (result) {
+                    //成功后的回调事件
+                    console.log(result.cade);
+                    if(result.cade===200){
+                        image=result.image;
+                        $('#tou').attr('src',image);
+
+                    }else{
+                        swal("服务器问题", "允许说着脏话联系我", {
+                            icon : "error",
+                            buttons: {
+                                confirm: {
+                                    className : 'btn btn-danger'
+                                }
+                            },
+                        });
+                    }
+
+                },
+                error:function(xhr){
+                    swal("服务器问题", "允许说着脏话联系我", {
+                        icon : "error",
+                        buttons: {
+                            confirm: {
+                                className : 'btn btn-danger'
+                            }
+                        },
+                    });
+                }
+
+            })
+        }
+
+    </script>
 
 
 

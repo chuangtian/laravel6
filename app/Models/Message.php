@@ -22,7 +22,7 @@ class Message extends Model
             ->where('m.status',2)
             ->where('m.creation_time','<',$time)
             ->orderBy('m.creation_time','desc')
-            ->simplePaginate(5);
+            ->paginate(5);
         return $info;
     }
 
