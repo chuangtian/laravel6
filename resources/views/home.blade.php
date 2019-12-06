@@ -15,8 +15,8 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    @foreach ($data as $value)
+                    <div id="zhuijia">
+                        @foreach ($data as $value)
                             <div class="card card-widget">
                                 <div class="card-header">
                                     <div class="user-block">
@@ -33,7 +33,7 @@
                                         @endif
                                     @endforeach
                                     <p></p>
-{{--                                    <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i> Share</button>--}}
+                                    {{--                                    <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i> Share</button>--}}
                                     <button type="button" class="btn btn-default btn-sm"   onclick="imagesubmit({{$value->id}})"><i class="far fa-thumbs-up"></i> Like</button>
                                     <span class="float-right text-muted"><span id="l{{$value->id}}">{{$value->like}}</span> 点赞 - <span id="c{{$value->id}}">{{ count($value->comments) }}</span> 评论</span>
                                 </div>
@@ -41,42 +41,46 @@
                                     <div id="addcomment{{$value->id}}">
                                         @foreach($value->comments as $comment)
 
-                                                <div class="card-comment">
-                                                    <!-- User image -->
-                                                    <img class="img-circle img-sm" src="{{asset('manager/'.$comment->c_image)}}" alt="User Image">
-                                                    <div class="comment-text">
+                                            <div class="card-comment">
+                                                <!-- User image -->
+                                                <img class="img-circle img-sm" src="{{asset('manager/'.$comment->c_image)}}" alt="User Image">
+                                                <div class="comment-text">
                                                     <span class="username">
                                                       {{$comment->c_name}}
                                                       <span class="text-muted float-right">{{$comment->creation_time}}</span>
                                                     </span><!-- /.username -->
-                                                        {{$comment->message}}
-                                                    </div>
-                                                    <!-- /.comment-text -->
+                                                    {{$comment->message}}
                                                 </div>
+                                                <!-- /.comment-text -->
+                                            </div>
 
                                         @endforeach
                                     </div>
-                                        @guest
-                                        @else
-                                            <div class="card-footer">
-{{--                                                <form action="#" method="post">--}}
-                                                <form  name="form" id="fromdata" enctype="multipart/form-data" onsubmit="return sub({{$value->id}})">
-                                                    <img class="img-fluid img-circle img-sm" src="{{ asset('manager/'.Auth::user()->image) }}" alt="Alt Text">
-                                                    <!-- .img-push is used to add margin to elements next to floating images -->
-                                                    <div class="img-push">
-                                                        <input type="hidden" name="messageid" id="messageid{{$value->id}}" value="{{$value->id}}">
-                                                        <input type="text" class="form-control form-control-sm" id="comment{{$value->id}}" value="" placeholder="按Enter发表评论">
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        @endguest
+                                    @guest
+                                    @else
+                                        <div class="card-footer">
+                                            {{--                                                <form action="#" method="post">--}}
+                                            <form  name="form" id="fromdata" enctype="multipart/form-data" onsubmit="return sub({{$value->id}})">
+                                                <img class="img-fluid img-circle img-sm" src="{{ asset('manager/'.Auth::user()->image) }}" alt="Alt Text">
+                                                <!-- .img-push is used to add margin to elements next to floating images -->
+                                                <div class="img-push">
+                                                    <input type="hidden" name="messageid" id="messageid{{$value->id}}" value="{{$value->id}}">
+                                                    <input type="text" class="form-control form-control-sm" id="comment{{$value->id}}" value="" placeholder="按Enter发表评论">
+                                                </div>
+                                            </form>
+                                        </div>
+                                    @endguest
 
 
                                 </div>
                             </div>
-                    @endforeach
+                        @endforeach
+                    </div>
 
-                        {{ $data->appends(['getTime' =>$time])->links() }}
+                            <div class="card-footer" id="jiazai" style="text-align:center;">
+                                <img  src="{{asset('timg.gif')}}"  alt="Photo">
+                            </div>
+{{--                        {{ $data->appends(['getTime' =>$time])->links() }}--}}
                 </div>
                         <!-- /.col -->
 
@@ -237,14 +241,69 @@
 
         return false;
     }
-    $(window).scroll(function(){
-        //判断是否滑动到页面底部
-        if($(window).scrollTop() <= $(document).height() - $(window).height()+300){
+    var current_page=2;
+    var tan=0;
+    var lastPage_page={{$lastPage}};
+    var gettime='{{$time}}';
+    function getNext() {
 
-            //alert($(window).scrollTop());
-            // TODO 滑动到底部时可请求下一页的数据并加载，加载可使用append方法
+        $.ajax({
+            url:"{{ url('/') }}?page="+current_page+"&gettime="+gettime,
+            type:"GET",
+            processData : false,
+            contentType : false,
+            dataType : 'json',
+            async : false,
+            success : function (result) {
+                //成功后的回调事件
+                console.log(result.code);
+                if(result.code===200){
+                    adddiv=result.message;
+                    $("#zhuijia").append(adddiv);
+                    current_page++;
+                }
+
+            },
+            error:function(xhr){
+                swal("服务器问题", "允许说着脏话联系我", {
+                    icon : "error",
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-danger'
+                        }
+                    },
+                });
+            }
+
+        });
+        //$("#jiazai").css("display","none");
+    }
+    $(window).scroll(function(){
+
+        //判断是否滑动到页面底部
+        if($(window).scrollTop()=== $(document).height() - $(window).height()){
+            if(current_page > lastPage_page){
+                $("#jiazai").css("display","none");
+                if(tan===0){
+                    swal("往下没有了🤗", {
+                        icon : "info",
+                        buttons: {
+                            confirm: {
+                                className : 'btn btn-info'
+                            }
+                        },
+                    });
+                    tan++;
+                }
+            }else{
+                getNext();
+            }
+
         }
+
     });
+
+
 
 </script>
 

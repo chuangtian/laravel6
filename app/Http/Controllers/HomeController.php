@@ -69,7 +69,68 @@ class HomeController extends Controller
 
 
         }
-        return view('home',['data' => $message,'time'=>$time]);
+        if($page>=2){
+            $str='';
+            foreach ($message as $value){
+                $str.=' <div class="card card-widget">
+                                <div class="card-header">
+                                    <div class="user-block">
+                                        <img class="img-circle" src="'.$value->u_image.'" alt="User Image">
+                                        <span class="username"><a href="#">'.$value->name.'</a></span>
+                                        <span class="description">发布时间 - '.$value->creation_time.'</span>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <p>'.$value->message.'</p>';
+                                    foreach($value->image as $imagea){
+                                        if($imagea){
+                                            $str.='<img class="img-fluid pad" src="'.$imagea.'" alt="Photo">';
+                                        }
+                                    }
+                                    $str.='<p></p>
+
+                                    <button type="button" class="btn btn-default btn-sm"   onclick="imagesubmit('.$value->id.')"><i class="far fa-thumbs-up"></i> Like</button>
+                                    <span class="float-right text-muted"><span id="l'.$value->id.'">'.$value->like.'</span> 点赞 - <span id="c'.$value->id.'">'.count($value->comments) .'</span> 评论</span>
+                                </div>
+                                <div class="card-footer card-comments">
+                                    <div id="addcomment'.$value->id.'">';
+                                        foreach ($value->comments as $comment){
+                                            $str.='<div class="card-comment">
+                                                    <!-- User image -->
+                                                    <img class="img-circle img-sm" src="'.asset('manager /'.$comment->c_image).'" alt="User Image">
+                                                    <div class="comment-text">
+                                                    <span class="username">
+                                                      '.$comment->c_name.'
+                                                      <span class="text-muted float-right">'.$comment->creation_time.'</span>
+                                                    </span><!-- /.username -->
+                                                        '.$comment->message.'
+                                                    </div>
+                                                    <!-- /.comment-text -->
+                                                </div>';
+                                        }
+                                        $str.='</div>';
+                                        $this->middleware('auth');
+                                        if(Auth::id()){
+                                            $str.='<div class="card-footer">
+                                                <form  name="form" id="fromdata" enctype="multipart/form-data" onsubmit="return sub('.$value->id.')">
+                                                    <img class="img-fluid img-circle img-sm" src="'. asset('manager/'.Auth::user()->image).'" alt="Alt Text">
+                                                    <!-- .img-push is used to add margin to elements next to floating images -->
+                                                    <div class="img-push">
+                                                        <input type="hidden" name="messageid" id="messageid{{$value->id}}" value="'.$value->id.'">
+                                                        <input type="text" class="form-control form-control-sm" id="comment'.$value->id.'" value="" placeholder="按Enter发表评论">
+                                                    </div>
+                                                </form>
+                                            </div>';
+                                        }
+                                         $str.='</div>
+                                </div>';
+            }
+            $da['code']=200;
+            $da['message']=$str;
+            return $da;
+        }
+
+        return view('home',['data' => $message,'time'=>$time,'lastPage'=>$message->lastPage()]);
     }
 
     //点赞接口
