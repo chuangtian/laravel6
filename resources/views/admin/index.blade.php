@@ -133,8 +133,8 @@
                 async : false,
                 success : function (result) {
                     //成功后的回调事件
-                    console.log(result.cade);
-                    if(result.cade===200){
+                    console.log(result.code);
+                    if(result.code===200){
                         image=result.image;
                         adddiv='<div class="col-6 col-sm-4">\n' +
                             '                                                    <label class="imagecheck mb-4">\n' +

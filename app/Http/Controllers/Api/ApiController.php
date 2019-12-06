@@ -13,9 +13,9 @@ class ApiController extends Controller
     public function updateImage(Request $request){
         try{
             $data['image']=asset($request->file('image')->store('manager','public'));
-            $data['cade']=200;
+            $data['code']=200;
         }catch (\Exception $e){
-            $data['cade']=402;
+            $data['code']=402;
             return $data;
         }
         return $data;

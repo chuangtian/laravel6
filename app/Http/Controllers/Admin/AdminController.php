@@ -24,6 +24,9 @@ class AdminController extends Controller
         return view('admin.index');
     }
 
+    /*
+     * 添加朋友圈
+     */
     public function addMessage(Request $request){
         $message=$request->input('message','');
         $imagecheck=$request->input('imagecheck',array());
@@ -43,6 +46,9 @@ class AdminController extends Controller
         return view('admin.index');
     }
 
+    public function editUser(Request $request){
+        dd(1);
+    }
 
 
 

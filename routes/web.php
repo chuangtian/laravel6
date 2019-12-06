@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth','prefix'=>'admin','namespace'=>'Admin'], fu
 
 Route::group(['middleware' => 'auth','prefix'=>'user','namespace'=>'Admin'], function () {
     Route::get('/edit', 'UserController@edit')->name('userEdit');
+    Route::post('/editUser', 'UserController@editUser')->name('editUser');
 });
 
 
