@@ -97,7 +97,7 @@ class HomeController extends Controller
                                         foreach ($value->comments as $comment){
                                             $str.='<div class="card-comment">
                                                     <!-- User image -->
-                                                    <img class="img-circle img-sm" src="'.asset('manager /'.$comment->c_image).'" alt="User Image">
+                                                    <img class="img-circle img-sm" src="'.asset('manager/'.$comment->c_image).'" alt="User Image">
                                                     <div class="comment-text">
                                                     <span class="username">
                                                       '.$comment->c_name.'
