@@ -62,11 +62,11 @@
                             <div class="form-group">
                                 <form  name="form" id="fromdata" enctype="multipart/form-data" onsubmit="return editPassword()">
                                     <label for="email2">修改密码</label>
-                                    <input type="text" class="form-control" name="oldPassword" id="oldPassword" value="" placeholder="旧密码">
+                                    <input type="password" class="form-control" name="oldPassword" id="oldPassword" value="" placeholder="旧密码">
                                     <p></p>
-                                    <input type="text" class="form-control" name="newPassword1" id="newPassword1" value="" placeholder="新密码">
+                                    <input type="password" class="form-control" name="newPassword1" id="newPassword1" value="" placeholder="新密码">
                                     <p></p>
-                                    <input type="text" class="form-control" name="newPassword2" id="newPassword2" value="" placeholder="新密码确认">
+                                    <input type="password" class="form-control" name="newPassword2" id="newPassword2" value="" placeholder="新密码确认">
                                     <p></p>
                                     <button class="btn btn-success" style="width: 100px" type="submit">确认</button>
                                 </form>
