@@ -127,7 +127,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content bg-info">
                         <div class="modal-header">
-                            <h4 class="modal-title">出门右拐 慢走不送</h4>
+                            <h4 class="modal-title">我也不知道写点啥</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span></button>
                         </div>
