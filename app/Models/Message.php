@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginato;
+use phpDocumentor\Reflection\Types\Array_;
 
 class Message extends Model
 {
@@ -26,6 +27,25 @@ class Message extends Model
         return $info;
     }
 
-    //查询一条数据
+    //获取朋友圈总数
+    public function count($id){
+        $count=DB::table($this->table)->where('u_id',$id)->count();
+        return $count;
+    }
+
+    //获取我朋友圈全部id
+    public function getMeId($id){
+        $data=DB::table($this->table)
+            ->select('id')
+            ->where('u_id',$id)
+            ->get();
+        $meIds=array();
+        foreach ($data as $value){
+            $meIds[]=$value->id;
+        }
+        return $meIds;
+    }
+
+
 
 }

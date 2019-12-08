@@ -96,24 +96,24 @@
                     <div class="row">
                         <div class="col-sm-4 border-right">
                             <div class="description-block">
-                                <h5 class="description-header">3,200</h5>
-                                <span class="description-text">SALES</span>
+                                <h5 class="description-header">{{$meCount}}</h5>
+                                <span class="description-text">朋友圈总数</span>
                             </div>
                             <!-- /.description-block -->
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-4 border-right">
                             <div class="description-block">
-                                <h5 class="description-header">13,000</h5>
-                                <span class="description-text">FOLLOWERS</span>
+                                <h5 class="description-header">{{$coCount}}</h5>
+                                <span class="description-text">给我评论总数</span>
                             </div>
                             <!-- /.description-block -->
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-4">
                             <div class="description-block">
-                                <h5 class="description-header">35</h5>
-                                <span class="description-text">PRODUCTS</span>
+                                <h5 class="description-header">{{$liCount}}</h5>
+                                <span class="description-text">给我点赞总数</span>
                             </div>
                             <!-- /.description-block -->
                         </div>

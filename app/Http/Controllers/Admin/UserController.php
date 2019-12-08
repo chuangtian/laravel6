@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -32,6 +33,18 @@ class UserController extends Controller
         if($request->input('valueName')==="image"){
             $data[$request->input('valueName')]=Str::after($request->input('value'),asset('manager/'));
         }elseif($request->input('valueName')==="password"){
+            $oldPassword=$request->input('oldPassword');
+            $newPassword=$request->input('value');
+
+            if (!Hash::check($oldPassword, Auth::user()->password))
+            {
+                $data['code']=402;
+                $data['message']='旧密码不对';
+                return $data;
+            }else{
+                $pin= Hash::make($newPassword);
+                $data[$request->input('valueName')]=$pin;
+            }
 
 
         }else{

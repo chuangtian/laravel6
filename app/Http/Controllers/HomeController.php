@@ -57,9 +57,28 @@ class HomeController extends Controller
                 $comments[$value->m_id][]=$value;
             }
         }
+        $likeMode=new Like();
+        //获取朋友圈总数
+        $this->middleware('auth');
+        if(Auth::id()) {
+            //获取朋友圈总数
+            $uid=Auth::id();
+            $meCount = $messageModel->count($uid);
+            //获取我朋友圈的id
+            $meIds = $messageModel->getMeId($uid);
+            //通过朋友圈id获取评论数
+            $coCount= $commentModel->getMeCount($meIds);
+            //通过朋友圈ID获取点赞数
+            $liCount= $likeMode->getMeCount($meIds);
+
+        }else{
+            $meCount = 0;
+            $coCount = 0;
+            $liCount = 0;
+        }
 
         foreach ($message as $value){
-            $likeMode=new Like();
+
             $value->like=$likeMode->getCount($value->id);
             if(isset( $comments[$value->id])){
                 $value->comments=$comments[$value->id];
@@ -130,7 +149,7 @@ class HomeController extends Controller
             return $da;
         }
 
-        return view('home',['data' => $message,'time'=>$time,'lastPage'=>$message->lastPage()]);
+        return view('home',['data' => $message,'meCount' => $meCount,'coCount' => $coCount,'liCount' => $liCount,'time'=>$time,'lastPage'=>$message->lastPage()]);
     }
 
     //点赞接口

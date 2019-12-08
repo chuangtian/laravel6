@@ -40,4 +40,13 @@ class Like extends Model
         $users = DB::table($this->table)->where('m_id',$mid)->where('status',1)->count();
         return$users;
     }
+
+    //根据朋友圈ID统计评论数
+    public function getMeCount(array $ids)
+    {
+        $data=DB::table($this->table)
+            ->whereIn('m_id',$ids)
+            ->count();
+        return $data;
+    }
 }

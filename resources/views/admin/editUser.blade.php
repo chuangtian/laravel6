@@ -39,7 +39,7 @@
                             <div class="form-group">
                                 <label for="email2">修改名字</label>
                                 <form  name="form" id="fromdata" enctype="multipart/form-data" onsubmit="return editName()">
-                                 <input type="name" class="form-control" id="meName" value="{{ Auth::user()->name }}" placeholder="Enter 修改">
+                                 <input type="text" class="form-control" id="meName" value="{{ Auth::user()->name }}" placeholder="Enter 修改">
                                 </form>
                                  <small id="emailHelp2" class="form-text text-muted">Enter 提交修改</small>
                             </div>
@@ -62,10 +62,13 @@
                             <div class="form-group">
                                 <form  name="form" id="fromdata" enctype="multipart/form-data" onsubmit="return editPassword()">
                                     <label for="email2">修改密码</label>
-                                    <input type="email" class="form-control" id="oldPassword" value="" placeholder="旧密码">
-                                    <input type="email" class="form-control" id="newPassword1" value="" placeholder="新密码">
-                                    <input type="email" class="form-control" id="newPassword2" value="" placeholder="新密码确认">
-                                    <small id="emailHelp2" class="form-text text-muted">Enter 提交修改</small>
+                                    <input type="text" class="form-control" name="oldPassword" id="oldPassword" value="" placeholder="旧密码">
+                                    <p></p>
+                                    <input type="text" class="form-control" name="newPassword1" id="newPassword1" value="" placeholder="新密码">
+                                    <p></p>
+                                    <input type="text" class="form-control" name="newPassword2" id="newPassword2" value="" placeholder="新密码确认">
+                                    <p></p>
+                                    <button class="btn btn-success" style="width: 100px" type="submit">确认</button>
                                 </form>
                             </div>
                         </div>
@@ -260,9 +263,10 @@
             var formData = new FormData();
             formData.append("_token", "{{csrf_token()}}");
             formData.append("valueName", valueName);
-            formData.append("oldPassword", value);
-            formData.append("newPassword1", value);
-            formData.append("newPassword2", value);
+            formData.append("oldPassword", oldValue);
+            formData.append("value", newValue1);
+            formData.append("newPassword2", newValue2);
+
             $.ajax({
                 url:"{{ url('user/editUser') }}",
                 type:"POST",
