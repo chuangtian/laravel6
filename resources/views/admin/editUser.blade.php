@@ -60,11 +60,13 @@
                             </br>
                             </br>
                             <div class="form-group">
-                                <label for="email2">修改密码</label>
-                                <input type="email" class="form-control" id="email2" value="" placeholder="旧密码">
-                                <input type="email" class="form-control" id="email2" value="" placeholder="新密码">
-                                <input type="email" class="form-control" id="email2" value="" placeholder="新密码确认">
-                                <small id="emailHelp2" class="form-text text-muted">Enter 提交修改</small>
+                                <form  name="form" id="fromdata" enctype="multipart/form-data" onsubmit="return editPassword()">
+                                    <label for="email2">修改密码</label>
+                                    <input type="email" class="form-control" id="oldPassword" value="" placeholder="旧密码">
+                                    <input type="email" class="form-control" id="newPassword1" value="" placeholder="新密码">
+                                    <input type="email" class="form-control" id="newPassword2" value="" placeholder="新密码确认">
+                                    <small id="emailHelp2" class="form-text text-muted">Enter 提交修改</small>
+                                </form>
                             </div>
                         </div>
 
@@ -246,6 +248,67 @@
                 }
 
             })
+        }
+
+        //修改密码
+        function editPassword(){
+            valueName="password";
+            oldValue=$('#oldPassword').val();
+            newValue1=$('#newPassword1').val();
+            newValue2=$('#newPassword2').val();
+
+            var formData = new FormData();
+            formData.append("_token", "{{csrf_token()}}");
+            formData.append("valueName", valueName);
+            formData.append("oldPassword", value);
+            formData.append("newPassword1", value);
+            formData.append("newPassword2", value);
+            $.ajax({
+                url:"{{ url('user/editUser') }}",
+                type:"POST",
+                data:formData,
+                processData : false,
+                contentType : false,
+                dataType : 'json',
+                async : false,
+                success : function (result) {
+                    //成功后的回调事件
+                    console.log(result.code);
+                    if(result.code===200){
+                        swal(result.message, {
+                            icon: "success",
+                            buttons : {
+                                confirm : {
+                                    className: 'btn btn-success'
+                                }
+                            }
+                        });
+
+                    }else{
+                        swal("服务器问题", "允许说着脏话联系我", {
+                            icon : "error",
+                            buttons: {
+                                confirm: {
+                                    className : 'btn btn-danger'
+                                }
+                            },
+                        });
+                    }
+
+                },
+                error:function(xhr){
+                    swal("服务器问题", "允许说着脏话联系我", {
+                        icon : "error",
+                        buttons: {
+                            confirm: {
+                                className : 'btn btn-danger'
+                            }
+                        },
+                    });
+                }
+
+            })
+            return false;
         }
 
     </script>

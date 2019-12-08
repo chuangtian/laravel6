@@ -31,9 +31,14 @@ class UserController extends Controller
         }
         if($request->input('valueName')==="image"){
             $data[$request->input('valueName')]=Str::after($request->input('value'),asset('manager/'));
+        }elseif($request->input('valueName')==="password"){
+
+
         }else{
             $data[$request->input('valueName')]=$request->input('value');
         }
+
+
         $id=Auth::id();
         $userModers=new User();
         $info=$userModers->edit($data,$id);
