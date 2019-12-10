@@ -70,6 +70,7 @@
                                 <table id="add-row" class="display table table-striped table-hover" >
                                     <thead>
                                     <tr>
+                                        <th>编号</th>
                                         <th>名字</th>
                                         <th>简介</th>
                                         <th style="width: 10%">动作</th>
@@ -78,6 +79,7 @@
                                     <tbody>
                                     @foreach ($data as $value)
                                         <tr>
+                                            <td>{{$value->id}}</td>
                                             <td>{{$value->name}}</td>
                                             <td>{{$value->message}}</td>
                                             <td>
