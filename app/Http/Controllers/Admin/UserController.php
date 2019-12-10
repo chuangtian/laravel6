@@ -15,7 +15,7 @@ class UserController extends Controller
     //
 
     public function edit(Request $request){
-        return view('admin.editUser');
+        return view('admin.editUser',['xd'=>0]);
     }
 
     public function editUser(Request $request){

@@ -6,7 +6,7 @@
         <div class="content">
             <div class="page-inner">
                 <div class="page-header">
-                    <h4 class="page-title">状态</h4>
+                    <h4 class="page-title">视频</h4>
                     <ul class="breadcrumbs">
                         <li class="nav-home">
                             <a href="#">
@@ -17,45 +17,33 @@
                             <i class="flaticon-right-arrow"></i>
                         </li>
                         <li class="nav-item">
-                            <a href="#">状态</a>
-                        </li>
-                        <li class="separator">
-                            <i class="flaticon-right-arrow"></i>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#">发送状态</a>
+                            <a href="#">添加视频</a>
                         </li>
                     </ul>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <form method="POST" action="{{ route('addMessage') }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('addVideo') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="card">
                                 <div class="card-header">
-                                    <div class="card-title">编辑状态</div>
+                                    <div class="card-title">添加视频</div>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6 col-lg-12" >
 
                                             <div class="form-group">
-                                                <label for="comment">内容</label>
-                                                <textarea class="form-control" name="message" id="comment" rows="5">
-
-                                                    </textarea>
+                                                <label for="comment">视频名字</label>
+                                                <input type="text" class="form-control" name="name" id="name" value="" >
                                             </div>
-
+                                            <div class="form-group">
+                                                <label for="comment">视频简介</label>
+                                                <textarea class="form-control" name="message" rows="5"></textarea>
+                                            </div>
                                             <div class="form-group">
                                                 <label for="exampleFormControlFile1">上传文件</label>
-                                                <input type="file" class="form-control-file" id="exampleFormControlFile1"  onchange="imagesubmit()">
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="form-label">图片编辑</label>
-                                                <div class="row" id="addimage">
-
-                                                </div>
+                                                <input type="file" class="form-control-file" name="mp4" id="exampleFormControlFile1"  >
                                             </div>
 
                                         </div>
@@ -118,59 +106,6 @@
     <!-- Sweet Alert -->
     <script src="{{asset('assets/js/plugin/sweetalert/sweetalert.min.js')}}"></script>
 
-    <script>
-        function imagesubmit() {
-            var formData = new FormData();
-            var file = document.getElementById("exampleFormControlFile1").files[0];
-            formData.append("image", file);
-            $.ajax({
-                url:"{{ url('api/update/updateImage') }}",
-                type:"POST",
-                data:formData,
-                processData : false,
-                contentType : false,
-                dataType : 'json',
-                async : false,
-                success : function (result) {
-                    //成功后的回调事件
-                    console.log(result.code);
-                    if(result.code===200){
-                        image=result.image;
-                        adddiv='<div class="col-6 col-sm-4">\n' +
-                            '                                                    <label class="imagecheck mb-4">\n' +
-                            '                                                        <input name="imagecheck[]" type="checkbox" value="'+image+'" class="imagecheck-input"  checked="checked">\n' +
-                            '                                                        <figure class="imagecheck-figure">\n' +
-                            '                                                            <img src="'+image+'" alt="title" class="imagecheck-image">\n' +
-                            '                                                        </figure>\n' +
-                            '                                                    </label>\n' +
-                            '                                                </div>';
-                        $("#addimage").append(adddiv);
-                    }else{
-                        swal("服务器问题", "允许说着脏话联系我", {
-                            icon : "error",
-                            buttons: {
-                                confirm: {
-                                    className : 'btn btn-danger'
-                                }
-                            },
-                        });
-                    }
 
-                },
-                error:function(xhr){
-                    swal("服务器问题", "允许说着脏话联系我", {
-                        icon : "error",
-                        buttons: {
-                            confirm: {
-                                className : 'btn btn-danger'
-                            }
-                        },
-                    });
-                }
-
-            })
-        }
-
-    </script>
 
 @endsection

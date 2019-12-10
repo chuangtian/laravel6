@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use App\Models\Message;
+use App\Models\Video;
 
 class AdminController extends Controller
 {
@@ -21,7 +22,7 @@ class AdminController extends Controller
     }
 
     public function index(){
-        return view('admin.index');
+        return view('admin.index',['xd'=>11]);
     }
 
     /*
@@ -43,12 +44,44 @@ class AdminController extends Controller
         $data['update_time']=date('Y-m-d H:i:s');
         $messageModel=new Message();
         $messageModel->addMessage($data);
-        return view('admin.index');
+        return view('admin.index',['xd'=>11]);
     }
 
-    public function editUser(Request $request){
-        dd(1);
+    public function video(){
+        return view('admin.video',['xd'=>21]);
     }
+
+    public function addVideo(Request $request){
+        $data['url']=$request->file('mp4')->store('video','public');
+        $data['name']=$request->input('name');
+        $data['message']=$request->input('message');
+        $data['add_time']=date('Y-m-d H:i:s');
+        $data['status']=1;
+        $videoModel=new Video();
+        $add_info=$videoModel->addVideo($data);
+        return view('admin.video',['xd'=>21]);
+    }
+
+    public function videoList(){
+        $videoModel=new Video();
+        $data=$videoModel->getVideo();
+        return view('admin.tableList',['xd'=>22,'data'=>$data]);
+    }
+
+    public function videoDel(Request $request){
+        $id=$request->input('id');
+        $videoModel=new Video();
+        $videoModel->delVideo($id);
+        return redirect('/admin/videoList');
+    }
+
+    public function bvideo(Request $request){
+        $id=$request->input('id');
+        $videoModel=new Video();
+        $data=$videoModel->oneVideo($id);
+        return view('admin.bvideo',['xd'=>22,'data'=>$data]);
+    }
+
 
 
 

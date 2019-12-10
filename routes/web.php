@@ -23,6 +23,11 @@ Route::post('/comment', 'HomeController@comment')->name('comment');
 Route::group(['middleware' => 'auth','prefix'=>'admin','namespace'=>'Admin'], function () {
     Route::get('/', 'AdminController@index')->name('admin');
     Route::post('/addMessage', 'AdminController@addMessage')->name('addMessage');
+    Route::get('/video', 'AdminController@video')->name('video');
+    Route::post('/addVideo', 'AdminController@addVideo')->name('addVideo');
+    Route::get('/videoList', 'AdminController@videoList')->name('videoList');
+    Route::get('/bvideo', 'AdminController@bvideo')->name('bvideo');
+    Route::get('/videoDel', 'AdminController@videoDel')->name('videoDel');
 
 });
 

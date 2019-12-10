@@ -294,7 +294,7 @@
         <div class="sidebar-wrapper scrollbar scrollbar-inner">
             <div class="sidebar-content">
                 <div class="user">
-                    <div class="avatar-sm float-left mr-2">
+                    <div class="avatar-sm  float-left mr-2">
                         <img src="{{asset('manager/'.Auth::user()->image)}}" alt="..." class="avatar-img rounded-circle">
                     </div>
                     <div class="info">
@@ -307,11 +307,11 @@
                         </a>
                         <div class="clearfix"></div>
 
-                        <div class="collapse in" id="collapseExample">
-                            <ul class="nav">
+                        <div class="collapse in {{ ($xd==0) ? 'show' : '' }}" id="collapseExample">
+                            <ul class="nav ">
 
-                                <li>
-                                    <a href="{{route('userEdit')}}">
+                                <li class=" ">
+                                    <a href="{{route('userEdit')}}" >
                                         <span class="link-collapse">修改个人信息</span>
                                     </a>
                                 </li>
@@ -321,26 +321,56 @@
                     </div>
                 </div>
                 <ul class="nav nav-primary">
-
-                    <li class="nav-item active submenu">
+{{--                    动态--}}
+                    <li class="nav-item   {{ ($xd==11 or $xd==12) ? 'active submenu' : '' }}">
                         <a data-toggle="collapse" href="#forms">
                             <i class="fas fa-pen-square"></i>
                             <p>状态</p>
                             <span class="caret"></span>
                         </a>
-                        <div class="collapse show" id="forms">
+                        <div class="collapse {{ ($xd==11 or $xd==12) ? 'show' : '' }}" id="forms">
                             <ul class="nav nav-collapse">
-                                <li class="active">
+                                <li class="{{ ($xd==11) ? 'active' : '' }}">
                                     <a href="{{url('/admin')}}">
                                         <span class="sub-item">添加状态</span>
                                     </a>
                                 </li>
+{{--                                <li class="{{ ($xd==12) ? 'active' : '' }}">--}}
+{{--                                    <a href="{{url('/admin')}}">--}}
+{{--                                        <span class="sub-item">添加视频</span>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+
+                            </ul>
+                        </div>
+                    </li>
+{{--视频--}}
+                    <li class="nav-item   {{ ($xd==21) ? 'active submenu' : '' }}">
+                        <a data-toggle="collapse" href="#video">
+                            <i class="fas fa-pen-square"></i>
+                            <p>视频</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse {{ ($xd==21 or $xd ==22 ) ? 'show' : '' }}" id="video">
+                            <ul class="nav nav-collapse">
+                                <li class="{{ ($xd==21) ? 'active' : '' }}">
+                                    <a href="{{url('/admin/video')}}">
+                                        <span class="sub-item">添加视频</span>
+                                    </a>
+                                </li>
+                                <li class="{{ ($xd==22) ? 'active' : '' }}">
+                                    <a href="{{url('/admin/videoList')}}">
+                                        <span class="sub-item">视频列表</span>
+                                    </a>
+                                </li>
+
 
                             </ul>
                         </div>
                     </li>
 
                 </ul>
+
             </div>
         </div>
     </div>
