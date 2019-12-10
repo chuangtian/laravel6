@@ -16,7 +16,7 @@ class Video extends Model
 
     //获取数据
     public function getVideo(){
-        $data=DB::table($this->table)->oeder('id','desc')->get();
+        $data=DB::table($this->table)->orderBy('id','desc')->get();
         return $data;
     }
 
