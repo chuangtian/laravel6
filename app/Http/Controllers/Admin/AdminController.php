@@ -77,70 +77,29 @@ class AdminController extends Controller
 
     public function bvideo(Request $request){
         $id=$request->input('id');
-        $token=$this->test($request);
-        return view('admin.bvideo',['xd'=>22,'id'=>$id,'token'=>$token]);
+        return view('admin.bvideo',['xd'=>22,'id'=>$id]);
     }
 
     public function getVideoUrl(Request $request){
-        $id=$request->id;
-        $videoModel=new Video();
-        $data=$videoModel->oneVideo($id);
-        return redirect(asset($data->url));
+        try{
+            $id=$request->id;
+            if($_SERVER['HTTP_REFERER']!=url('admin/bvideo').'?id='.$id){
+                $data['code']=403;
+                return $data;
+            }
+            $videoModel=new Video();
+            $data=$videoModel->oneVideo($id);
+            return redirect(asset($data->url));
+        }catch (\Exception $e){
+            $data['code']=402;
+            return $data;
+        }
     }
 
     public function test(Request $request){
-        $userId = '7e527c151b';       // polyv 提供的服务器间的通讯验证
-        $secretkey = 'lmQy1ZS0Zn';     // polyv 提供的接口调用签名访问的key
-        $videoId = '7e527c151b2c81a42aeb8ec6e707f63d_7';  // 视频对应vid
-        $ts = time() * 1000;      // 时间戳
-        $viewerIp = $this->get_client_ip();  // 用户 ip
-        $viewerId = '1';      // 自定义用户 id
-        $viewerName = urlencode('田闯');  // 用户昵称, 若值为中文需要urlencode('张三')
-        $extraParams = 'HTML5';  // 自定义参数
-
-        /* 将参数 $userId、$secretkey、$videoId、$ts、$viewerIp、$viewerIp、$viewerId、$viewerName、$extraParams
-            按照ASCKII升序 key + value + key + value ... +value 拼接
-        */
-        $concated =  'extraParams'.$extraParams.'ts'.$ts.'userId'.$userId.'videoId'.$videoId.'viewerId'.$viewerId.'viewerIp'.$viewerIp.'viewerName'.$viewerName;
-
-// 再首尾加上 secretkey
-        $plain = $secretkey.$concated.$secretkey;
-
-// 取大写MD5
-        $sign = strtoupper(md5($plain));
-
-
-
-// 然后将下列参数用post请求  https://hls.videocc.net/service/v1/token 获取 token
-        $url = 'https://hls.videocc.net/service/v1/token';
-        $data = array('userId' => $userId, 'videoId' => $videoId, 'ts' => $ts, 'viewerIp' => $viewerIp, 'viewerName' => $viewerName, 'extraParams' => $extraParams, 'viewerId' => $viewerId, 'sign' => $sign);
-
-        $options = array(
-            'http' => array(
-                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method'  => 'POST',
-                'content' => http_build_query($data)
-            )
-        );
-        $context  = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-
-        // 获取返回结果的 token, 再传入 playsafe 中播放加密视频
-        $token = json_decode($result)->data->token;
-        return $token;
+        $a=$_SERVER['HTTP_REFERER'];
+        dd($a);
     }
-
-    public function get_client_ip() {
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
-            $ipaddress = $_SERVER['REMOTE_ADDR'];
-        }
-        return $ipaddress;
-    }
-
 
 
 
