@@ -25,11 +25,23 @@
 
                     <div class="embed-responsive embed-responsive-16by9">
                         <video controls controlsList="nodownload">
-                            <source src="{{asset($data->url)}}" type="video/mp4">
+{{--                            <source src="{{asset($data->url)}}" type="video/mp4">--}}
+                            <source src="{{url('admin/getVideoUrl/'.$id)}}" type="video/mp4">
 
                             您的浏览器不支持 video 标签。
                         </video>
                     </div>
+                    <div id="player"></div>
+                    <script src="//player.polyv.net/script/player.js"></script>
+                    <script>
+                        var player = polyvPlayer({
+                            wrap: '#player',
+                            width: 800,
+                            height: 533,
+                            vid: '7e527c151b2c81a42aeb8ec6e707f63d_7',
+                            playsafe: '{{ $token }}',
+                        });
+                    </script>
 
                 </div>
             </div>
