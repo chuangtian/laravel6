@@ -70,6 +70,7 @@
                                 <table id="add-row" class="display table table-striped table-hover" >
                                     <thead>
                                     <tr>
+                                        <th>编号</th>
                                         <th>名字</th>
                                         <th>简介</th>
                                         <th style="width: 10%">动作</th>
@@ -78,6 +79,7 @@
                                     <tbody>
                                     @foreach ($data as $value)
                                         <tr>
+                                            <td>{{$value->id}}</td>
                                             <td>{{$value->name}}</td>
                                             <td>{{$value->message}}</td>
                                             <td>
@@ -155,6 +157,10 @@
             // Add Row
             $('#add-row').DataTable({
                 "pageLength": 5,
+                //默认排序
+                "order": [
+                    [0, 'desc']//第一列正序
+                ],
             });
 
             var action = '<td> <div class="form-button-action"> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
