@@ -77,9 +77,12 @@
                         @endforeach
                     </div>
 
+                        @if ($lastPage!=1)
                             <div class="card-footer" id="jiazai" style="text-align:center;">
                                 <img  src="{{asset('timg.gif')}}"  alt="Photo">
                             </div>
+                        @endif
+
 {{--                        {{ $data->appends(['getTime' =>$time])->links() }}--}}
                 </div>
                         <!-- /.col -->

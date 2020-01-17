@@ -148,8 +148,8 @@ class HomeController extends Controller
             $da['message']=$str;
             return $da;
         }
-
-        return view('home',['data' => $message,'meCount' => $meCount,'coCount' => $coCount,'liCount' => $liCount,'time'=>$time,'lastPage'=>$message->lastPage()]);
+        //dd($message);
+        return view('home',['data' => $message,'meCount' => $meCount,'coCount' => $coCount,'liCount' => $liCount,'time'=>$time,'lastPage'=>$message->lastPage(),'lastPage'=>$message->lastPage()]);
     }
 
     //点赞接口
