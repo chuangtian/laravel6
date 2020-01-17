@@ -25,11 +25,13 @@
 
                     <div class="embed-responsive embed-responsive-16by9">
                         <video controls controlsList="nodownload">
-                            <source src="{{asset($data->url)}}" type="video/mp4">
+{{--                            <source src="{{asset($data->url)}}" type="video/mp4">--}}
+                            <source src="{{url('admin/getVideoUrl/'.$id)}}" type="video/mp4">
 
                             您的浏览器不支持 video 标签。
                         </video>
                     </div>
+
 
                 </div>
             </div>

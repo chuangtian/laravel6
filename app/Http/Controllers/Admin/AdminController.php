@@ -77,11 +77,29 @@ class AdminController extends Controller
 
     public function bvideo(Request $request){
         $id=$request->input('id');
-        $videoModel=new Video();
-        $data=$videoModel->oneVideo($id);
-        return view('admin.bvideo',['xd'=>22,'data'=>$data]);
+        return view('admin.bvideo',['xd'=>22,'id'=>$id]);
     }
 
+    public function getVideoUrl(Request $request){
+        try{
+            $id=$request->id;
+            if($_SERVER['HTTP_REFERER']!=url('admin/bvideo').'?id='.$id){
+                $data['code']=403;
+                return $data;
+            }
+            $videoModel=new Video();
+            $data=$videoModel->oneVideo($id);
+            return redirect(asset($data->url));
+        }catch (\Exception $e){
+            $data['code']=402;
+            return $data;
+        }
+    }
+
+    public function test(Request $request){
+        $a=$_SERVER['HTTP_REFERER'];
+        dd($a);
+    }
 
 
 

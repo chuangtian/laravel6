@@ -28,6 +28,8 @@ Route::group(['middleware' => 'auth','prefix'=>'admin','namespace'=>'Admin'], fu
     Route::get('/videoList', 'AdminController@videoList')->name('videoList');
     Route::get('/bvideo', 'AdminController@bvideo')->name('bvideo');
     Route::get('/videoDel', 'AdminController@videoDel')->name('videoDel');
+    Route::get('/getVideoUrl/{id}', 'AdminController@getVideoUrl')->name('getVideoUrl');
+
 
 });
 
