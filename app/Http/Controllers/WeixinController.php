@@ -166,7 +166,8 @@ class WeixinController extends Controller
 //            $callback['Ret']['pass_ticket']=$wxinfo->pass_ticket;
 //            //获取post数据
 //            $post = $this->post_self($callback);
-            $mes = urlencode($value->message);
+            //$mes = urlencode($value->message);
+            $mes = $value->message;
             //$sendmsg = $this->webwxsendmsg($post, $value->from_UserName, $callback['post_url_header'], $value->to_UserName, $mes);
             //dd($sendmsg);
 //            for ($i=0;$i<30;$i++){
