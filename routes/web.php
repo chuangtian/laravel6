@@ -39,6 +39,14 @@ Route::group(['middleware' => 'auth','prefix'=>'user','namespace'=>'Admin'], fun
 });
 
 
+//微信
+Route::get('/w_login', 'WeixinController@w_login')->name('w_login');
+Route::get('/w_login_info', 'WeixinController@w_login_info')->name('w_login_info');
+Route::get('/w_getFriend', 'WeixinController@getFriend')->name('w_getFriend');
+Route::get('/w_from', 'WeixinController@from')->name('w_from');
+Route::get('/w_send', 'WeixinController@startSend')->name('w_send');
+Route::post('/w_sendMessage', 'WeixinController@sendMessage')->name('w_sendMessage');
+
 
 
 
