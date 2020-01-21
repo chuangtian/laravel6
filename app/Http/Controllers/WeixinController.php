@@ -169,15 +169,15 @@ class WeixinController extends Controller
             $mes = urlencode($value->message);
             //$sendmsg = $this->webwxsendmsg($post, $value->from_UserName, $callback['post_url_header'], $value->to_UserName, $mes);
             //dd($sendmsg);
-            for ($i=0;$i<30;$i++){
-                echo $i;
-                Send::dispatch($value->wxuin,$mes,$value->from_UserName,$value->to_UserName);
-            }
-            //Send::dispatch($value->wxuin,$mes,$value->from_UserName,$value->to_UserName);
+//            for ($i=0;$i<30;$i++){
+//                echo $i;
+//                Send::dispatch($value->wxuin,$mes,$value->from_UserName,$value->to_UserName);
+//            }
+            Send::dispatch($value->wxuin,$mes,$value->from_UserName,$value->to_UserName);
         }
 
 
-        //DB::table('w_sendMessage')->where('time','<=',$time)->delete();
+        DB::table('w_sendMessage')->where('time','<=',$time)->delete();
         return 'ok';
     }
 
