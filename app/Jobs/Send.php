@@ -53,6 +53,7 @@ class Send implements ShouldQueue
         $mes = urlencode($this->message);
         $sendmsg = $this->webwxsendmsg($post, $this->from_UserName, $callback['post_url_header'], $this->to_UserName, $mes);
         //dd($sendmsg);
+        
     }
 
     /**
