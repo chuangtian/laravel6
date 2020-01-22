@@ -36,7 +36,10 @@ class WeixinController extends Controller
                 DB::table('w_uid')->insertGetId($uid);
                 //获取登录成功回调
                 $callback = $this->get_uri($_GET['uuid']);
-                //dd($callback);
+                if($callback['Ret']['ret']==1203){
+                    return $callback['Ret']['message'];
+                }
+                dd($callback);
                 $data['post_url_header']=$callback['post_url_header'];
                 $data['https_header']=$callback['https_header'];
                 $data['ret']=$callback['Ret']['ret'];
