@@ -39,7 +39,7 @@ class WeixinController extends Controller
                 if($callback['Ret']['ret']==1203){
                     return $callback['Ret']['message'];
                 }
-                dd($callback);
+                //dd($callback);
                 $data['post_url_header']=$callback['post_url_header'];
                 $data['https_header']=$callback['https_header'];
                 $data['ret']=$callback['Ret']['ret'];
