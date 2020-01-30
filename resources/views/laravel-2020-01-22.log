@@ -1,0 +1,22 @@
+[2020-01-22 01:59:35] local.ERROR: The process has been signaled with signal "1". {"exception":"[object] (Symfony\\Component\\Process\\Exception\\ProcessSignaledException(code: 0): The process has been signaled with signal \"1\". at /var/www/html/laravel6/vendor/symfony/process/Process.php:423)
+[stacktrace]
+#0 /var/www/html/laravel6/vendor/symfony/process/Process.php(236): Symfony\\Component\\Process\\Process->wait()
+#1 /var/www/html/laravel6/vendor/laravel/framework/src/Illuminate/Queue/Listener.php(175): Symfony\\Component\\Process\\Process->run(Object(Closure))
+#2 /var/www/html/laravel6/vendor/laravel/framework/src/Illuminate/Queue/Listener.php(90): Illuminate\\Queue\\Listener->runProcess(Object(Symfony\\Component\\Process\\Process), '128')
+#3 /var/www/html/laravel6/vendor/laravel/framework/src/Illuminate/Queue/Console/ListenCommand.php(68): Illuminate\\Queue\\Listener->listen(NULL, 'default', Object(Illuminate\\Queue\\ListenerOptions))
+#4 [internal function]: Illuminate\\Queue\\Console\\ListenCommand->handle()
+#5 /var/www/html/laravel6/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(32): call_user_func_array(Array, Array)
+#6 /var/www/html/laravel6/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#7 /var/www/html/laravel6/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#8 /var/www/html/laravel6/vendor/laravel/framework/src/Illuminate/Container/Container.php(591): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#9 /var/www/html/laravel6/vendor/laravel/framework/src/Illuminate/Console/Command.php(192): Illuminate\\Container\\Container->call(Array)
+#10 /var/www/html/laravel6/vendor/symfony/console/Command/Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#11 /var/www/html/laravel6/vendor/laravel/framework/src/Illuminate/Console/Command.php(179): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#12 /var/www/html/laravel6/vendor/symfony/console/Application.php(915): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 /var/www/html/laravel6/vendor/symfony/console/Application.php(272): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Queue\\Console\\ListenCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 /var/www/html/laravel6/vendor/symfony/console/Application.php(148): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 /var/www/html/laravel6/vendor/laravel/framework/src/Illuminate/Console/Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#16 /var/www/html/laravel6/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(131): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#17 /var/www/html/laravel6/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#18 {main}
+"} 
