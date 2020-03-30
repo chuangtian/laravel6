@@ -13,6 +13,7 @@ Route::group([
     $router->get('/', 'HomeController@index')->name('admin.home');
     $router->resource('users', UserController::class);
     $router->get('/test', 'HomeController@test')->name('admin.test');
-    $router->get('/test', 'HomeController@test')->name('admin.test');
+
+
 
 });

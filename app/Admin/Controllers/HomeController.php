@@ -69,5 +69,6 @@ class HomeController extends Controller
         //$content->view('dashboard', ['data' => 'foo']);
 
         return $content;
+
     }
 }
