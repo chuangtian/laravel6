@@ -32,6 +32,6 @@
     </div>
 </div>
 <script src="{{ asset('js/broadcasting.js') }}" defer></script>
-<script src="{{ asset('js/private.js') }}" defer></script>
+{{--<script src="{{ asset('js/private.js') }}" defer></script>--}}
 
 </html>
