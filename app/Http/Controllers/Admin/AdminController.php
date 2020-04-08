@@ -30,9 +30,10 @@ class AdminController extends Controller
      */
     public function addMessage(Request $request){
         $message=$request->input('message','');
+        $user=$request->input('user','');
         $imagecheck=$request->input('imagecheck',array());
         $image='';
-
+        //dd($imagecheck);
         foreach ($imagecheck as $value) {
             $image.=Str::after($value, asset('/')).',';
         }
@@ -44,6 +45,11 @@ class AdminController extends Controller
         $data['update_time']=date('Y-m-d H:i:s');
         $messageModel=new Message();
         $messageModel->addMessage($data);
+        if($user){
+            $user_data['code']=200;
+            return $user_data;
+        }
+
         return view('admin.index',['xd'=>11]);
     }
 

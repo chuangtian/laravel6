@@ -3,11 +3,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <script src="//{{ Request::getHost() }}:6001/socket.io/socket.io.js"></script>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <script>
+        window.Laravel = {!! json_encode([
+        'user' => auth()->check() ? auth()->user()->id : null,
+    ]) !!};
+
+    </script>
+
+
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -58,25 +66,7 @@
                                         <a class="nav-link" href="{{ route('register') }}">{{ __('app.Register') }}</a>
                                     </li>
                                 @endif
-{{--                            @else--}}
-{{--                                <li class="nav-item dropdown">--}}
-{{--                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>--}}
-{{--                                        {{ Auth::user()->name }} <span class="caret"></span>--}}
-{{--                                    </a>--}}
 
-{{--                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">--}}
-{{--                                        <a class="dropdown-item" href="{{ route('logout') }}"--}}
-{{--                                           onclick="event.preventDefault();--}}
-{{--                                                         document.getElementById('logout-form').submit();">--}}
-{{--                                            {{ __('Logout') }}--}}
-{{--                                        </a>--}}
-
-{{--                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">--}}
-{{--                                            @csrf--}}
-{{--                                        </form>--}}
-{{--                                    </div>--}}
-{{--                                </li>--}}
-{{--                            @endguest--}}
                         </ul>
                     </div>
                 </div>
@@ -127,12 +117,52 @@
                 <div class="modal-dialog">
                     <div class="modal-content bg-info">
                         <div class="modal-header">
-                            <h4 class="modal-title">我也不知道写点啥</h4>
+                            <h4 class="modal-title">添加状态</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
-                            <p>先空着吧</p>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form  name="form" id="messdata" enctype="multipart/form-data"  onsubmit="return admess()" >
+                                        @csrf
+
+                                                <div class="row">
+                                                    <div class="col-md-6 col-lg-12" >
+
+                                                        <div class="form-group">
+                                                            <label for="comment">内容</label>
+                                                            <textarea class="form-control" name="message" id="message4" rows="5">
+
+                                                    </textarea>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="exampleFormControlFile1">上传文件</label>
+                                                            <input type="file" class="form-control-file" id="exampleFormControlFile1"  onchange="imagesubmit2()">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="form-label">图片编辑</label>
+                                                            <div class="card">
+                                                                <div class="row" id="addimage">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            <div class="card-action">
+                                                <button class="btn btn-outline-light">Submit</button>
+                                                {{--                                    <button class="btn btn-danger">Cancel</button>--}}
+                                            </div>
+
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
@@ -155,5 +185,127 @@
             @yield('content')
         </main>
     </div>
+    <script>
+        function imagesubmit2() {
+            var formData = new FormData();
+            var file = document.getElementById("exampleFormControlFile1").files[0];
+            formData.append("image", file);
+            $.ajax({
+                url:"{{ url('api/update/updateImage') }}",
+                type:"POST",
+                data:formData,
+                processData : false,
+                contentType : false,
+                dataType : 'json',
+                async : false,
+                success : function (result) {
+                    //成功后的回调事件
+                    console.log(result.code);
+                    if(result.code===200){
+                        image=result.image;
+                        adddiv='<div class="col-6 col-sm-4">\n' +
+                            '                                                    <label class="imagecheck mb-4">\n' +
+                            '                                                        <input name="imagecheck[]" type="checkbox" value="'+image+'" class="imagecheck-input"  checked="checked">\n' +
+                            '                                                        <figure class="imagecheck-figure">\n' +
+                            '                                                            <img src="'+image+'" alt="title" class="imagecheck-image img-thumbnail">\n' +
+                            '                                                        </figure>\n' +
+                            '                                                    </label>\n' +
+                            '                                                </div>';
+                        $("#addimage").append(adddiv);
+                    }else{
+                        swal("服务器问题", "允许说着脏话联系我", {
+                            icon : "error",
+                            buttons: {
+                                confirm: {
+                                    className : 'btn btn-danger'
+                                }
+                            },
+                        });
+                    }
+
+                },
+                error:function(xhr){
+                    swal("服务器问题", "允许说着脏话联系我", {
+                        icon : "error",
+                        buttons: {
+                            confirm: {
+                                className : 'btn btn-danger'
+                            }
+                        },
+                    });
+                }
+
+            })
+        }
+
+        function admess() {
+            comment=$('#message4').val();
+            var formData = new FormData();
+            formData.append("_token", "{{csrf_token()}}");
+            formData.append("message", comment);
+            $('input[name="imagecheck[]"]').each(function(i){
+                formData.append("imagecheck[]", this.value);
+
+            });
+
+            formData.append("user", 1);
+            $.ajax({
+                url:"{{ route('addMessage') }}",
+                type:"POST",
+                data:formData,
+                processData : false,
+                contentType : false,
+                dataType : 'json',
+                async : false,
+                success : function (result) {
+                    //成功后的回调事件
+                    console.log(result.code);
+                    if(result.code===200){
+                        window.location.reload();
+                        // $('#modal-info').modal('hide');
+                        // window.location.reload();
+                    }
+                    if (result.cade===402){
+                        swal("请登录", "", {
+                            icon : "error",
+                            buttons: {
+                                confirm: {
+                                    className : 'btn btn-danger'
+                                }
+                            },
+                        });
+                    }
+
+                    if (result.cade===401){
+                        swal(result.message, {
+                            icon: "success",
+                            buttons : {
+                                confirm : {
+                                    className: 'btn btn-success'
+                                }
+                            }
+                        });
+                    }
+
+                },
+                error:function(xhr){
+                    swal("服务器问题", "允许说着脏话联系我", {
+                        icon : "error",
+                        buttons: {
+                            confirm: {
+                                className : 'btn btn-danger'
+                            }
+                        },
+                    });
+                }
+
+            });
+
+            return false;
+        }
+
+    </script>
+    <script src="{{ asset('js/private.js') }}" defer></script>
+    <script src="{{ asset('js/broadcasting.js') }}" defer></script>
 </body>
 </html>

@@ -14,7 +14,10 @@
 //Route::get('/', function () {
 //    return view('welcome');
 //});
-
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/test', 'Api\ApiController@tes')->name('home');
+});
+Route::get('/tt', 'Api\ApiController@tt')->name('tt');
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
