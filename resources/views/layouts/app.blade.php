@@ -304,6 +304,17 @@
             return false;
         }
 
+        $(function () { $('#modal-info').on('show.bs.modal', function () {
+            a=$('#pid').val();
+            console.log(a);
+            var modalHeight=$(window).height() / 3;
+            console.log(modalHeight);
+            $(this).find('.modal-dialog').css({
+                'margin-top': modalHeight
+            });
+        })
+        });
+
     </script>
     <script src="{{ asset('js/private.js') }}" defer></script>
     <script src="{{ asset('js/broadcasting.js') }}" defer></script>

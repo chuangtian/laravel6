@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Chat;
 use Illuminate\Http\Request;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 use phpDocumentor\Reflection\Types\Array_;
 use App\Models\Comment;
 use App\Models\Like;
+use Illuminate\Support\Facades\App;
 
 class HomeController extends Controller
 {
@@ -196,16 +198,48 @@ class HomeController extends Controller
             if($info){
                 $commentdata=$commentMode->getOneComment($info);
                 $data['code']=200;
-                $data['message']='评论成功';
                 $data['c_image']=asset('manager/'.$commentdata->c_image);
                 $data['c_name']=$commentdata->c_name;
                 $data['creation_time']=$commentdata->creation_time;
                 $data['message']=$commentdata->message;
-
-
             }else{
                 $data['code']=401;
                 $data['message']='评论失败';
+            }
+        }else{
+            $data['code']=402;
+            $data['message']='请登录';
+        }
+        return $data;
+    }
+
+    //添加聊天记录接口
+    public function chat(Request $request){
+//        $locale = App::getLocale();
+//        App::setLocale('cn');
+//        dd($locale,trans('app.Login'));
+        $this->middleware('auth');
+        if(Auth::id()){
+            $uid=Auth::id();
+            $t_id=$request->input('t_id',0);
+            $content=$request->input('content',0);
+            $chatMode=new Chat();
+            $data['t_id']=$t_id;
+            $data['message']=$content;
+            $data['f_uid']=$uid;
+            $data['created_at']=date('Y-m-d H:i:s');
+            $data['updated_at']=date('Y-m-d H:i:s');
+            $info=$chatMode->add($data);
+            if($info){
+                $chatdata=$chatMode->getOne($info);
+                $data['code']=200;
+                $data['f_image']=asset('manager/'.$chatdata->f_image);
+                $data['f_name']=$chatdata->f_name;
+                $data['created_at']=$chatdata->created_at;
+                $data['message']=$chatdata->content;
+            }else{
+                $data['code']=401;
+                $data['message']='发送失败';
             }
         }else{
             $data['code']=402;

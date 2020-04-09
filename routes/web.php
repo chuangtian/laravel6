@@ -23,8 +23,9 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 Route::post('/like', 'HomeController@addlike')->name('like');
 Route::post('/comment', 'HomeController@comment')->name('comment');
+Route::get('/chat', 'HomeController@chat')->name('chat');
 Route::group(['middleware' => 'auth','prefix'=>'admin','namespace'=>'Admin'], function () {
-    Route::get('/', 'AdminController@index')->name('admin');
+    Route::get('/index', 'AdminController@index')->name('admin');
     Route::post('/addMessage', 'AdminController@addMessage')->name('addMessage');
     Route::get('/video', 'AdminController@video')->name('video');
     Route::post('/addVideo', 'AdminController@addVideo')->name('addVideo');
@@ -32,8 +33,6 @@ Route::group(['middleware' => 'auth','prefix'=>'admin','namespace'=>'Admin'], fu
     Route::get('/bvideo', 'AdminController@bvideo')->name('bvideo');
     Route::get('/videoDel', 'AdminController@videoDel')->name('videoDel');
     Route::get('/getVideoUrl/{id}', 'AdminController@getVideoUrl')->name('getVideoUrl');
-
-
 });
 
 Route::group(['middleware' => 'auth','prefix'=>'user','namespace'=>'Admin'], function () {
@@ -41,6 +40,10 @@ Route::group(['middleware' => 'auth','prefix'=>'user','namespace'=>'Admin'], fun
     Route::post('/editUser', 'UserController@editUser')->name('editUser');
 });
 
+
+Route::group(['middleware' => 'auth','prefix'=>'chat','namespace'=>'Admin'], function () {
+    Route::get('/index', 'ChatController@index')->name('chat');
+});
 
 //微信
 Route::get('/w_login', 'WeixinController@w_login')->name('w_login');
