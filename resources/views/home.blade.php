@@ -407,7 +407,7 @@
     }
     $(function () { $('.chat').on('show.bs.modal', function () {
             tid=$('#tid').val();
-            console.log(a);
+            console.log(tid);
             var modalHeight=$(window).height() / 1.5;
             console.log(modalHeight);
             $(this).find('.modal-dialog').css({
