@@ -352,6 +352,7 @@
         // console.log(showdiv);
     }
     $(function () { $('.chat').on('show.bs.modal', function () {
+
             $("#chats").empty();
             var modalHeight=$(window).height() / 1.5;
             console.log(modalHeight);
