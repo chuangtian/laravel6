@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PrivateEvent;
 use App\Models\Chat;
+use App\Models\Users;
 use Illuminate\Http\Request;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
@@ -95,7 +97,7 @@ class HomeController extends Controller
             foreach ($message as $value){
                 $str.=' <div class="card card-widget">
                                 <div class="card-header">
-                                    <div class="user-block">
+                                    <div class="user-block"  data-toggle="modal" data-target=".chat"  onclick="values('.$value->u_id.')">
                                         <img class="img-circle" src="'.$value->u_image.'" alt="User Image">
                                         <span class="username"><a href="#">'.$value->name.'</a></span>
                                         <span class="description">发布时间 - '.$value->creation_time.'</span>
@@ -221,26 +223,62 @@ class HomeController extends Controller
         $this->middleware('auth');
         if(Auth::id()){
             $uid=Auth::id();
-            $t_id=$request->input('t_id',0);
-            $content=$request->input('content',0);
+            $t_id=$request->input('tid',0);
+            $content=$request->input('message',0);
             $chatMode=new Chat();
             $data['t_id']=$t_id;
-            $data['message']=$content;
-            $data['f_uid']=$uid;
+            $data['content']=$content;
+            $data['f_id']=$uid;
             $data['created_at']=date('Y-m-d H:i:s');
             $data['updated_at']=date('Y-m-d H:i:s');
             $info=$chatMode->add($data);
             if($info){
                 $chatdata=$chatMode->getOne($info);
                 $data['code']=200;
+                $data['uid']=$uid;
                 $data['f_image']=asset('manager/'.$chatdata->f_image);
                 $data['f_name']=$chatdata->f_name;
                 $data['created_at']=$chatdata->created_at;
                 $data['message']=$chatdata->content;
+                if($uid!=$t_id){
+                    $article = Users::where([
+                        ['id', $t_id]
+                    ])->first();
+                    broadcast(new PrivateEvent($article,$data));
+                }
             }else{
                 $data['code']=401;
                 $data['message']='发送失败';
             }
+        }else{
+            $data['code']=402;
+            $data['message']='请登录';
+        }
+
+        return $data;
+    }
+
+    //添加聊天记录接口
+    public function getChat(Request $request){
+
+        $this->middleware('auth');
+        if(Auth::id()){
+            $f_id=Auth::id();
+            $t_id=$request->input('tid',0);
+            $chatMode=new Chat();
+            $chatdata=$chatMode->getAll($f_id,$t_id);
+            $data['code']=200;
+//            dd($f_id,$t_id,$chatdata);
+            foreach ($chatdata as $key=>$value){
+                $data['data'][$key]['f_image']=asset('manager/'.$value->f_image);
+                $data['data'][$key]['f_name']=$value->f_name;
+                $data['data'][$key]['created_at']=$value->created_at;
+                $data['data'][$key]['message']=$value->content;
+                $data['data'][$key]['fid']=$value->f_id;
+            }
+
+            return $data;
+
         }else{
             $data['code']=402;
             $data['message']='请登录';

@@ -21,7 +21,7 @@
                                 <div class="card-header">
                                     <div class="user-block"  data-toggle="modal" data-target=".chat"  onclick="values({{$value->u_id}})">
                                         <img class="img-circle" src="{{ asset($value->u_image)}}" alt="User Image">
-                                        <span class="username"><a href="#">{{$value->name}}</a></span>
+                                        <span class="username">{{$value->name}}</span>
                                         <span class="description">发布时间 - {{$value->creation_time}}</span>
                                     </div>
                                 </div>
@@ -108,63 +108,9 @@
             </div>
             <div class="modal-body" >
                 <div class="direct-chat-messages pre-scrollable" id="chats">
-                    <!-- Message. Default to the left -->
-                    <div class="direct-chat-msg">
-                        <div class="direct-chat-infos clearfix">
-                            <span class="direct-chat-name float-left">Alexander Pierce</span>
-                            <span class="direct-chat-timestamp float-right">23 Jan 2:00 pm</span>
-                        </div>
-                        <!-- /.direct-chat-infos -->
-                        <img class="direct-chat-img" src="../dist/img/user1-128x128.jpg" alt="Message User Image">
-                        <!-- /.direct-chat-img -->
-                        <div class="direct-chat-text">
-                            Is this template really for free? That's unbelievable!
-                        </div>
-                        <!-- /.direct-chat-text -->
-                    </div>
-                    <!-- /.direct-chat-msg -->
 
-                    <!-- Message to the right -->
-                    <div class="direct-chat-msg right">
-                        <div class="direct-chat-infos clearfix">
-                            <span class="direct-chat-name float-right">Sarah Bullock</span>
-                            <span class="direct-chat-timestamp float-left">23 Jan 2:05 pm</span>
-                        </div>
-                        <!-- /.direct-chat-infos -->
-                        <img class="direct-chat-img" src="../dist/img/user3-128x128.jpg" alt="Message User Image">
-                        <!-- /.direct-chat-img -->
-                        <div class="direct-chat-text bg-info">
-                            You better believe it!
-                        </div>
                         <!-- /.direct-chat-text -->
-                    </div>
 
-                    <div class="direct-chat-msg right">
-                        <div class="direct-chat-infos clearfix">
-                            <span class="direct-chat-name float-right">Sarah Bullock</span>
-                            <span class="direct-chat-timestamp float-left">23 Jan 2:05 pm</span>
-                        </div>
-                        <!-- /.direct-chat-infos -->
-                        <img class="direct-chat-img" src="../dist/img/user3-128x128.jpg" alt="Message User Image">
-                        <!-- /.direct-chat-img -->
-                        <div class="direct-chat-text bg-info">
-                            You better believe it!
-                        </div>
-                        <!-- /.direct-chat-text -->
-                    </div>
-                    <div class="direct-chat-msg right">
-                        <div class="direct-chat-infos clearfix">
-                            <span class="direct-chat-name float-right">Sarah Bullock</span>
-                            <span class="direct-chat-timestamp float-left">23 Jan 2:05 pm</span>
-                        </div>
-                        <!-- /.direct-chat-infos -->
-                        <img class="direct-chat-img" src="../dist/img/user3-128x128.jpg" alt="Message User Image">
-                        <!-- /.direct-chat-img -->
-                        <div class="direct-chat-text bg-info">
-                            You better believe it!
-                        </div>
-                        <!-- /.direct-chat-text -->
-                    </div>
 
                 </div>
             </div>
@@ -173,7 +119,7 @@
                 <form   name="form"  enctype="multipart/form-data" onsubmit="return chat()">
                     <div class="input-group">
                         <input type="hidden" id="tid" value="">
-                        <input type="text" name="message" placeholder="Type Message ..." class="form-control">
+                        <input type="text" name="message" id="message" placeholder="Type Message ..." class="form-control">
                         <span class="input-group-append">
                       <button type="submit" class="btn btn-success">Send</button>
                     </span>
@@ -406,40 +352,103 @@
         // console.log(showdiv);
     }
     $(function () { $('.chat').on('show.bs.modal', function () {
-            tid=$('#tid').val();
-            console.log(a);
+            $("#chats").empty();
             var modalHeight=$(window).height() / 1.5;
             console.log(modalHeight);
             $(this).find('.modal-dialog').css({
                 'margin-top': modalHeight
             });
+
+            tid=$('#tid').val();
+            var formData = new FormData();
+            formData.append("_token", "{{csrf_token()}}");
+            formData.append("tid", tid);
+            console.log(tid);
+            $.ajax({
+                url:"{{ url('/getChat') }}",
+                type:"POST",
+                data:formData,
+                processData : false,
+                contentType : false,
+                dataType : 'json',
+                async : false,
+                success : function (result) {
+                    if(result.code===200){
+                        console.log(result);
+                        arr=result.data;
+                        for(var i=0;i<arr.length;i++){
+                            if(arr[i].fid=={{ auth()->user()->id}}){
+                                mes='<div class="direct-chat-msg right">\n' +
+                                    '                        <div class="direct-chat-infos clearfix">\n' +
+                                    '                            <span class="direct-chat-name float-right">'+arr[i].f_name+'</span>\n' +
+                                    '                            <span class="direct-chat-timestamp float-left">'+arr[i].created_at+'</span>\n' +
+                                    '                        </div>\n' +
+                                    '                        <!-- /.direct-chat-infos -->\n' +
+                                    '                        <img class="direct-chat-img" src="'+arr[i].f_image+'" alt="Message User Image">\n' +
+                                    '                        <!-- /.direct-chat-img -->\n' +
+                                    '                        <div class="direct-chat-text bg-info">\n' +
+                                    '                            '+arr[i].message+'\n' +
+                                    '                        </div>\n' +
+                                    '                        <!-- /.direct-chat-text -->\n' +
+                                    '                    </div>';
+                                processProgress(mes);
+                            }else{
+                                mes='<div class="direct-chat-msg">\n' +
+                                    '                        <div class="direct-chat-infos clearfix">\n' +
+                                    '                            <span class="direct-chat-name float-right">'+arr[i].f_name+'</span>\n' +
+                                    '                            <span class="direct-chat-timestamp float-left">'+arr[i].created_at+'</span>\n' +
+                                    '                        </div>\n' +
+                                    '                        <!-- /.direct-chat-infos -->\n' +
+                                    '                        <img class="direct-chat-img" src="'+arr[i].f_image+'" alt="Message User Image">\n' +
+                                    '                        <!-- /.direct-chat-img -->\n' +
+                                    '                        <div class="direct-chat-text bg-info">\n' +
+                                    '                            '+arr[i].message+'\n' +
+                                    '                        </div>\n' +
+                                    '                        <!-- /.direct-chat-text -->\n' +
+                                    '                    </div>';
+                                processProgress(mes);
+                            }
+
+                            // console.log(arr[i].created_at);
+                        }
+                    }else{
+                        swal("请登录", "", {
+                            icon : "error",
+                            buttons: {
+                                confirm: {
+                                    className : 'btn btn-danger'
+                                }
+                            },
+                        });
+                    }
+
+                },
+                error:function(xhr){
+                    swal("服务器问题", "允许说着脏话联系我", {
+                        icon : "error",
+                        buttons: {
+                            confirm: {
+                                className : 'btn btn-danger'
+                            }
+                        },
+                    });
+                }
+
+            })
             setTimeout(function () {
                 var scrollHeight = $('#chats').prop("scrollHeight");
                 $('#chats').animate({scrollTop:scrollHeight}, 400);
             },300);
-            // mes='<div class="direct-chat-msg right">\n' +
-            //     '                        <div class="direct-chat-infos clearfix">\n' +
-            //     '                            <span class="direct-chat-name float-right">Sarah Bullock</span>\n' +
-            //     '                            <span class="direct-chat-timestamp float-left">23 Jan 2:05 pm</span>\n' +
-            //     '                        </div>\n' +
-            //     '                        <!-- /.direct-chat-infos -->\n' +
-            //     '                        <img class="direct-chat-img" src="../dist/img/user3-128x128.jpg" alt="Message User Image">\n' +
-            //     '                        <!-- /.direct-chat-img -->\n' +
-            //     '                        <div class="direct-chat-text bg-info">\n' +
-            //     '                            You better believe it!\n' +
-            //     '                        </div>\n' +
-            //     '                        <!-- /.direct-chat-text -->\n' +
-            //     '                    </div>';
-            // processProgress2(mes);
 
 
-            //$('#chats')[0].scrollTop =$('#chats')[0].scrollHeight;
-            // // $('#chats').scrollTop( $('#chats')[0].scrollHeight);
-            $('#chats').on('scroll',function(){
-                //$('#chats').scrollTop( $('#chats')[0].scrollHeight);
-                // div 滚动了zd
-                console.log('滚动了');
-            });
+
+
+
+
+            // $('#chats').on('scroll',function(){
+            //
+            //     console.log('滚动了');
+            // });
 
     });});
     //放下面
@@ -478,11 +487,13 @@
 
     function chat() {
         tid=$('#tid').val();
-        console.log(a);
+        message=$('#message').val();
         var formData = new FormData();
         formData.append("_token", "{{csrf_token()}}");
-        formData.append("mid", $this);
-        t_id=tid;
+        formData.append("tid", tid);
+        formData.append("message", message);
+        console.log(tid);
+
         $.ajax({
             url:"{{ url('/chat') }}",
             type:"POST",
@@ -493,24 +504,23 @@
             async : false,
             success : function (result) {
                 if(result.code===200){
-                    swal(result.message, {
-                        icon: "success",
-                        buttons : {
-                            confirm : {
-                                className: 'btn btn-success'
-                            }
-                        }
-                    });
-                    like=$("#l"+id).text();
-                    if(result.info===1){
-                        zenglike=parseInt(like)+1;
-                    }else{
-                        zenglike=parseInt(like)-1;
-                        if(zenglike<=0){
-                            zenglike=0;
-                        }
-                    }
-                    $("#l"+id).text(zenglike)
+                    //left
+                    mes='<div class="direct-chat-msg right">\n' +
+                        '                        <div class="direct-chat-infos clearfix">\n' +
+                        '                            <span class="direct-chat-name float-right">'+result.f_name+'</span>\n' +
+                        '                            <span class="direct-chat-timestamp float-left">'+result.created_at+'</span>\n' +
+                        '                        </div>\n' +
+                        '                        <!-- /.direct-chat-infos -->\n' +
+                        '                        <img class="direct-chat-img" src="'+result.f_image+'" alt="Message User Image">\n' +
+                        '                        <!-- /.direct-chat-img -->\n' +
+                        '                        <div class="direct-chat-text bg-info">\n' +
+                        '                            '+result.message+'\n' +
+                        '                        </div>\n' +
+                        '                        <!-- /.direct-chat-text -->\n' +
+                        '                    </div>';
+                     processProgress(mes);
+                    // console.log(result);
+                   $('#message').val('');
                 }else{
                     swal("请登录", "", {
                         icon : "error",
@@ -535,7 +545,9 @@
             }
 
         })
+        return false;
     }
+
 </script>
 
 @endsection
