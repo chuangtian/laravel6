@@ -139,6 +139,7 @@
 
 
 <script>
+    console.log(window.Laravel.user);
     function imagesubmit($this) {
         var formData = new FormData();
         formData.append("_token", "{{csrf_token()}}");
@@ -378,37 +379,39 @@
                         console.log(result);
                         arr=result.data;
                         for(var i=0;i<arr.length;i++){
-                            if(arr[i].fid=={{ auth()->user()->id}}){
-                                mes='<div class="direct-chat-msg right">\n' +
-                                    '                        <div class="direct-chat-infos clearfix">\n' +
-                                    '                            <span class="direct-chat-name float-right">'+arr[i].f_name+'</span>\n' +
-                                    '                            <span class="direct-chat-timestamp float-left">'+arr[i].created_at+'</span>\n' +
-                                    '                        </div>\n' +
-                                    '                        <!-- /.direct-chat-infos -->\n' +
-                                    '                        <img class="direct-chat-img" src="'+arr[i].f_image+'" alt="Message User Image">\n' +
-                                    '                        <!-- /.direct-chat-img -->\n' +
-                                    '                        <div class="direct-chat-text bg-info">\n' +
-                                    '                            '+arr[i].message+'\n' +
-                                    '                        </div>\n' +
-                                    '                        <!-- /.direct-chat-text -->\n' +
-                                    '                    </div>';
-                                processProgress(mes);
-                            }else{
-                                mes='<div class="direct-chat-msg">\n' +
-                                    '                        <div class="direct-chat-infos clearfix">\n' +
-                                    '                            <span class="direct-chat-name float-right">'+arr[i].f_name+'</span>\n' +
-                                    '                            <span class="direct-chat-timestamp float-left">'+arr[i].created_at+'</span>\n' +
-                                    '                        </div>\n' +
-                                    '                        <!-- /.direct-chat-infos -->\n' +
-                                    '                        <img class="direct-chat-img" src="'+arr[i].f_image+'" alt="Message User Image">\n' +
-                                    '                        <!-- /.direct-chat-img -->\n' +
-                                    '                        <div class="direct-chat-text bg-info">\n' +
-                                    '                            '+arr[i].message+'\n' +
-                                    '                        </div>\n' +
-                                    '                        <!-- /.direct-chat-text -->\n' +
-                                    '                    </div>';
-                                processProgress(mes);
-                            }
+                                if(arr[i].fid==window.Laravel.user){
+                                    mes='<div class="direct-chat-msg right">\n' +
+                                        '                        <div class="direct-chat-infos clearfix">\n' +
+                                        '                            <span class="direct-chat-name float-right">'+arr[i].f_name+'</span>\n' +
+                                        '                            <span class="direct-chat-timestamp float-left">'+arr[i].created_at+'</span>\n' +
+                                        '                        </div>\n' +
+                                        '                        <!-- /.direct-chat-infos -->\n' +
+                                        '                        <img class="direct-chat-img" src="'+arr[i].f_image+'" alt="Message User Image">\n' +
+                                        '                        <!-- /.direct-chat-img -->\n' +
+                                        '                        <div class="direct-chat-text bg-info">\n' +
+                                        '                            '+arr[i].message+'\n' +
+                                        '                        </div>\n' +
+                                        '                        <!-- /.direct-chat-text -->\n' +
+                                        '                    </div>';
+                                    processProgress(mes);
+                                }else{
+                                    mes='<div class="direct-chat-msg">\n' +
+                                        '                        <div class="direct-chat-infos clearfix">\n' +
+                                        '                            <span class="direct-chat-name float-right">'+arr[i].f_name+'</span>\n' +
+                                        '                            <span class="direct-chat-timestamp float-left">'+arr[i].created_at+'</span>\n' +
+                                        '                        </div>\n' +
+                                        '                        <!-- /.direct-chat-infos -->\n' +
+                                        '                        <img class="direct-chat-img" src="'+arr[i].f_image+'" alt="Message User Image">\n' +
+                                        '                        <!-- /.direct-chat-img -->\n' +
+                                        '                        <div class="direct-chat-text bg-info">\n' +
+                                        '                            '+arr[i].message+'\n' +
+                                        '                        </div>\n' +
+                                        '                        <!-- /.direct-chat-text -->\n' +
+                                        '                    </div>';
+                                    processProgress(mes);
+                                }
+
+
 
                             // console.log(arr[i].created_at);
                         }
