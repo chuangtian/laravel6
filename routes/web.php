@@ -14,6 +14,8 @@
 //Route::get('/', function () {
 //    return view('welcome');
 //});
+Route::get('/addAixue', 'HomeController@addAixue')->name('addAixue');
+Route::post('/addAixueSave', 'HomeController@addAixueSave')->name('addAixueSave');
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/test', 'Api\ApiController@tes')->name('home');
 });

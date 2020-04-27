@@ -21,3 +21,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/update/updateImage', 'Api\ApiController@updateImage');
 Route::post('/update/test', 'Api\ApiController@test');
 Route::get('/tes', 'Api\ApiController@tes');
+Route::get('/aixue', 'Api\ApiController@aixue');

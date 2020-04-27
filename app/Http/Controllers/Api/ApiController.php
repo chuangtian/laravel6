@@ -73,5 +73,16 @@ class ApiController extends Controller
         broadcast(new PrivateEvent($article,$test2));
     }
 
+    //测试
+    public function aixue(Request $request){
+        $id=$request->input('id',0);
+        if($id==0){
+            return $id;
+        }
+        $data=DB::table('aixue_name_a')->where('name_id',$id)->get();
+        return  $data;
+
+    }
+
 
 }

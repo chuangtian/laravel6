@@ -8,6 +8,7 @@ use App\Models\Users;
 use Illuminate\Http\Request;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Types\Array_;
 use App\Models\Comment;
 use App\Models\Like;
@@ -284,6 +285,41 @@ class HomeController extends Controller
             $data['message']='请登录';
         }
         return $data;
+    }
+
+    //添加聊天记录接口
+    public function addAixue(Request $request){
+
+        $id=$request->input('id',0);
+        if($id==0){
+            //添加记录获取id
+            $id=DB::table('aixue_name')->insertGetId(array('created_at'=>date('Y-m-d H:i:s')));
+            return redirect('/addAixue?id='.$id);
+        }else{
+            return view('welcome',['id' => $id]);
+        }
+
+
+
+    }
+
+    //添加聊天记录接口
+    public function addAixueSave(Request $request){
+
+        $data['name_id']=$request->input('id',0);
+        $data['couid']=$request->input('couid',0);
+        $data['olid']=$request->input('olid',0);
+        $data['totalTime']=$request->input('totalTime',0);
+        $info=DB::table('aixue_name_a')->insert($data);
+        if($info){
+            return 200;
+        }else{
+            return 402;
+        }
+
+
+
+
     }
 
 
